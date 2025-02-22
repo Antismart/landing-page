@@ -7,6 +7,7 @@ const LandingPage = () => {
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '' });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const apiUrl = 'http://localhost:5000/api/waitlist';  // Remove /submit if it's not in your route
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,13 +30,16 @@ const LandingPage = () => {
   
     try {
       // Updated fetch call to use relative path in production
-      const response = await fetch(`/api/waitlist/submit`, {
+    
+      console.log('Sending request to:', apiUrl);
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-      });;
+      });
+      console.log('Response:', response);
   
       if (!response.ok) {
         const data = await response.json();
