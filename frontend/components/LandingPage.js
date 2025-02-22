@@ -7,7 +7,10 @@ const LandingPage = () => {
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '' });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
-  const apiUrl = 'http://localhost:5000/api/waitlist/submit';
+    // Use environment variable for API URL
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL 
+    ? `${process.env.NEXT_PUBLIC_API_URL}/api/waitlist/submit`
+    : '/api/waitlist/submit';
 
 
   const handleChange = (e) => {
@@ -16,36 +19,37 @@ const LandingPage = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError('');
-  
-  try {
-    console.log('Sending request to:', apiUrl);
-    console.log('Request body:', formData);
+    e.preventDefault();
+    setError('');
     
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
-    
-    console.log('Response status:', response.status);
-    const data = await response.json();
-    console.log('Response data:', data);
+    try {
+      console.log('Sending request to:', apiUrl);
+      console.log('Request body:', formData);
+      
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+        credentials: 'include', // Add this for cookies if needed
+      });
+      
+      console.log('Response status:', response.status);
+      const data = await response.json();
+      console.log('Response data:', data);
 
-    if (!response.ok) {
-      throw new Error(data.message || 'Submission failed');
+      if (!response.ok) {
+        throw new Error(data.message || 'Submission failed');
+      }
+
+      setSubmitted(true);
+      setFormData({ firstName: '', lastName: '', email: '' });
+    } catch (err) {
+      console.error('Error details:', err);
+      setError(err.message || 'Something went wrong. Please try again later.');
     }
-
-    setSubmitted(true);
-    setFormData({ firstName: '', lastName: '', email: '' });
-  } catch (err) {
-    console.error('Error details:', err);
-    setError(err.message || 'Something went wrong. Please try again later.');
-  }
-};
+  };
 
   const titleWords = "Nurturing the Future of Regenerative Agriculture".split(" ");
   const coloredTitle = titleWords.map((word, index) => (

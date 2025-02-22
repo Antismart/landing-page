@@ -2,11 +2,13 @@
 const nextConfig = {
   output: 'export',
   images: {
-    unoptimized: true,
+    unoptimized: true
   },
   env: {
-    NEXT_PUBLIC_API_URL: process.env.NODE_ENV === 'production' ? '' : 'http://localhost:5000',
-  },
+    NEXT_PUBLIC_API_URL: process.env.NODE_ENV === 'production' 
+      ? process.env.NEXT_PUBLIC_API_URL
+      : 'http://localhost:5000',
+  }
 };
 
-export default nextConfig; // Use ES6 export
+export default nextConfig;
