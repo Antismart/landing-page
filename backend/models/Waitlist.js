@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const waitlistSchema = new mongoose.Schema({
   firstName: {
@@ -24,4 +24,6 @@ const waitlistSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Waitlist', waitlistSchema);
+const Waitlist = mongoose.model('Waitlist', waitlistSchema);
+
+export default Waitlist;

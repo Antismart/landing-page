@@ -8,6 +8,10 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "engines": {
+    "node": "18.19.0",
+    "npm": "9.9.2"
+  },
   "dependencies": {
     "@tailwindcss/forms": "^0.5.10",
     "lucide-react": "^0.475.0",

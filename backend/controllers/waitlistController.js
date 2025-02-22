@@ -1,9 +1,9 @@
-const Waitlist = require('../models/Waitlist');
+import Waitlist from '../models/Waitlist.js';  // Use import for ES6 modules
 
-exports.addToWaitlist = async (req, res) => {
+export const addToWaitlist = async (req, res) => {
   try {
     const { firstName, lastName, email } = req.body;
-    
+
     const existingUser = await Waitlist.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ 

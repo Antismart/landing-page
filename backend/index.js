@@ -1,9 +1,20 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const connectDB = require('./config/db');
-const waitlistRoutes = require('./routes/waitlistRoutes');
+// index.js
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import path from 'path';
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import connectDB from './config/db.js';  // Note: add .js extension
+import waitlistRoutes from './routes/waitlistRoutes.js';  // Note: add .js extension
+
+
+dotenv.config();
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 

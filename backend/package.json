@@ -1,13 +1,13 @@
 {
   "name": "regen-roots-backend",
   "version": "1.0.0",
+  "type": "module",
   "engines": {
     "node": ">=18.0.0"
   },
   "scripts": {
-    "start": "node src/index.js",
-    "build": "cd frontend && npm install && npm run build",
-    "dev": "nodemon src/index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
