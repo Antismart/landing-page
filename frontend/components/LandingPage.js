@@ -29,14 +29,13 @@ const LandingPage = () => {
   
     try {
       // Updated fetch call to use relative path in production
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/waitlist/submit`, {
+      const response = await fetch(`/api/waitlist/submit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-        credentials: 'include', // Add this for cookies if needed
-      });
+      });;
   
       if (!response.ok) {
         const data = await response.json();

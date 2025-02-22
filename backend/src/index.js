@@ -17,12 +17,12 @@ app.use(express.json());
 // API Routes
 app.use('/api/waitlist', waitlistRoutes);
 
-// Serve Next.js static files
+// Serve static files from the Next.js build
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../frontend/.next')));
+  app.use(express.static(path.join(__dirname, '../frontend/out')));
   
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/.next/server/pages/index.html'));
+    res.sendFile(path.join(__dirname, '../frontend/out/index.html'));
   });
 }
 
