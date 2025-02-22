@@ -7,7 +7,8 @@ const LandingPage = () => {
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '' });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
-  const apiUrl = 'http://localhost:5000/api/waitlist';  // Remove /submit if it's not in your route
+  const apiUrl = 'http://localhost:5000/api/waitlist/submit';
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -15,43 +16,36 @@ const LandingPage = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
+  e.preventDefault();
+  setError('');
+  
+  try {
+    console.log('Sending request to:', apiUrl);
+    console.log('Request body:', formData);
     
-    if (!formData.firstName || !formData.lastName || !formData.email) {
-      setError('Please fill in all fields');
-      return;
-    }
-  
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      setError('Please enter a valid email address');
-      return;
-    }
-  
-    try {
-      // Updated fetch call to use relative path in production
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
     
-      console.log('Sending request to:', apiUrl);
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      console.log('Response:', response);
-  
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || 'Submission failed');
-      }
-  
-      setSubmitted(true);
-      setFormData({ firstName: '', lastName: '', email: '' });
-    } catch (err) {
-      setError(err.message || 'Something went wrong. Please try again later.');
+    console.log('Response status:', response.status);
+    const data = await response.json();
+    console.log('Response data:', data);
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Submission failed');
     }
-  };
+
+    setSubmitted(true);
+    setFormData({ firstName: '', lastName: '', email: '' });
+  } catch (err) {
+    console.error('Error details:', err);
+    setError(err.message || 'Something went wrong. Please try again later.');
+  }
+};
 
   const titleWords = "Nurturing the Future of Regenerative Agriculture".split(" ");
   const coloredTitle = titleWords.map((word, index) => (

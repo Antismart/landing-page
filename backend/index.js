@@ -21,8 +21,15 @@ const app = express();
 // Connect to MongoDB
 connectDB();
 
-// CORS configuration
-app.use(cors());
+// In index.js
+app.use(cors({
+  origin: 'http://localhost:3000', // or whatever port your Next.js app is running on
+  methods: ['POST', 'GET', 'OPTIONS'],
+  credentials: true,
+  allowedHeaders: ['Content-Type']
+}));
+
+
 app.use(express.json());
 
 // API Routes
