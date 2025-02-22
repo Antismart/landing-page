@@ -1,20 +1,14 @@
-// next.config.mjs
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    output: 'standalone',
-    async headers() {
-      return [
-        {
-          source: '/api/:path*',
-          headers: [
-            { key: 'Access-Control-Allow-Credentials', value: 'true' },
-            { key: 'Access-Control-Allow-Origin', value: '*' },
-            { key: 'Access-Control-Allow-Methods', value: 'GET,POST' },
-          ],
-        },
-      ];
-    },
-};
+  output: 'standalone',  // Important for deployment
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/:path*`,
+      },
+    ]
+  }
+}
 
-export default nextConfig;
+module.exports = nextConfig
