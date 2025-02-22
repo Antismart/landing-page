@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { ChevronRight, Coins, Sprout, Users, TreePine, Sun } from 'lucide-react';
+import '../app/globals.css'  // This should contain your Tailwind imports
 
 const LandingPage = () => {
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '' });

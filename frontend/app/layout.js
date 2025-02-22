@@ -15,12 +15,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={jacquesFrancois.className}>
-      <body>
-        <div className="min-h-screen flex flex-col">
-          {children}
-        </div>
-      </body>
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
+      <body>{children}</body>
     </html>
-  );
+  )
 }

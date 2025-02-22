@@ -37,8 +37,18 @@ app.use('/api/waitlist', waitlistRoutes);
 
 // Serve static files from the Next.js build
 if (process.env.NODE_ENV === 'production') {
+  // Serve the static files
   app.use(express.static(path.join(__dirname, '../frontend/out')));
   
+  // Serve the CSS files with correct MIME type
+  app.use('/_next', express.static(path.join(__dirname, '../frontend/out/_next'), {
+    setHeaders: (res, path) => {
+      if (path.endsWith('.css')) {
+        res.setHeader('Content-Type', 'text/css');
+      }
+    }
+  }));
+
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/out/index.html'));
   });
