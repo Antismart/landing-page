@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { ChevronRight, Coins, Sprout, Users, TreePine, Sun } from 'lucide-react';
-import '../app/globals.css'  // This should contain your Tailwind imports
 
 const LandingPage = () => {
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '' });
@@ -14,43 +13,64 @@ const LandingPage = () => {
     : '/api/waitlist/submit';
 
 
-  const handleChange = (e) => {
+interface FormData {
+    firstName: string;
+    lastName: string;
+    email: string;
+}
+
+interface ChangeEvent {
+    target: {
+        name: string;
+        value: string;
+    };
+}
+
+const handleChange = (e: ChangeEvent) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-  };
+};
 
-  const handleSubmit = async (e) => {
+interface SubmitEvent {
+    preventDefault: () => void;
+}
+
+interface ApiResponse {
+    message?: string;
+}
+
+const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
     setError('');
     
     try {
-      console.log('Sending request to:', apiUrl);
-      console.log('Request body:', formData);
-      
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-        credentials: 'include', // Add this for cookies if needed
-      });
-      
-      console.log('Response status:', response.status);
-      const data = await response.json();
-      console.log('Response data:', data);
+        console.log('Sending request to:', apiUrl);
+        console.log('Request body:', formData);
+        
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+            credentials: 'include', // Add this for cookies if needed
+        });
+        
+        console.log('Response status:', response.status);
+        const data: ApiResponse = await response.json();
+        console.log('Response data:', data);
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Submission failed');
-      }
+        if (!response.ok) {
+            throw new Error(data.message || 'Submission failed');
+        }
 
-      setSubmitted(true);
-      setFormData({ firstName: '', lastName: '', email: '' });
-    } catch (err) {
-      console.error('Error details:', err);
-      setError(err.message || 'Something went wrong. Please try again later.');
+        setSubmitted(true);
+        setFormData({ firstName: '', lastName: '', email: '' });
+    } catch (err: any) {
+        console.error('Error details:', err);
+        setError(err.message || 'Something went wrong. Please try again later.');
     }
-  };
+};
 
   const titleWords = "Nurturing the Future of Regenerative Agriculture".split(" ");
   const coloredTitle = titleWords.map((word, index) => (
