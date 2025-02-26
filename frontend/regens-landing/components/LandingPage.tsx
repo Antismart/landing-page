@@ -13,11 +13,6 @@ const LandingPage = () => {
     : '/api/waitlist/submit';
 
 
-interface FormData {
-    firstName: string;
-    lastName: string;
-    email: string;
-}
 
 interface ChangeEvent {
     target: {
