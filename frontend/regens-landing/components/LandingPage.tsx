@@ -61,9 +61,13 @@ const handleSubmit = async (e: SubmitEvent) => {
 
         setSubmitted(true);
         setFormData({ firstName: '', lastName: '', email: '' });
-    } catch (err: any) {
+    } catch (err) {
         console.error('Error details:', err);
-        setError(err.message || 'Something went wrong. Please try again later.');
+        if (err instanceof Error) {
+            setError(err.message || 'Something went wrong. Please try again later.');
+        } else {
+            setError('Something went wrong. Please try again later.');
+        }
     }
 };
 
