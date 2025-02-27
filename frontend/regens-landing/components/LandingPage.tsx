@@ -103,7 +103,7 @@ const handleSubmit = async (e: SubmitEvent) => {
         {[...Array(12)].map((_, i) => (
           <div
             key={`v-${i}`}
-            className="absolute h-full w-px bg-gradient-to-b from-transparent via-gray-500/20 to-transparent animate-pulse hidden sm:block"
+            className="absolute h-full w-px bg-gradient-to-b from-transparent via-gray-500/20 to-transparent animate-pulse"
             style={{
               left: `${(i + 1) * 8}%`,
               animationDelay: `${i * 0.2}s`,
@@ -115,7 +115,7 @@ const handleSubmit = async (e: SubmitEvent) => {
         {[...Array(8)].map((_, i) => (
           <div
             key={`h-${i}`}
-            className="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-500/20 to-transparent animate-pulse hidden sm:block"
+            className="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-500/20 to-transparent animate-pulse"
             style={{
               top: `${(i + 1) * 12}%`,
               animationDelay: `${i * 0.3}s`,
@@ -127,7 +127,7 @@ const handleSubmit = async (e: SubmitEvent) => {
         {[...Array(6)].map((_, i) => (
           <div
             key={`d-${i}`}
-            className="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-500/20 to-transparent animate-pulse hidden lg:block"
+            className="absolute w-full h-px bg-gradient-to-r from-transparent via-gray-500/20 to-transparent animate-pulse"
             style={{
               top: '50%',
               left: '-50%',
