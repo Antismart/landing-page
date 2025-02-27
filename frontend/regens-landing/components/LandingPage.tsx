@@ -37,6 +37,12 @@ interface ApiResponse {
 const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
     setError('');
+
+    // Frontend validation for empty fields
+    if (!formData.firstName || !formData.lastName || !formData.email) {
+        setError('All fields are required.');
+        return;
+    }
     
     try {
         console.log('Sending request to:', apiUrl);
