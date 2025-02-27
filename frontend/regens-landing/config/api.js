@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { ChevronRight, Coins, Sprout, Users, TreePine, Sun } from 'lucide-react';
+import '../app/globals.css'  // This should contain your Tailwind imports
 
 const LandingPage = () => {
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '' });
@@ -13,70 +14,43 @@ const LandingPage = () => {
     : '/api/waitlist/submit';
 
 
-
-interface ChangeEvent {
-    target: {
-        name: string;
-        value: string;
-    };
-}
-
-const handleChange = (e: ChangeEvent) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-};
+  };
 
-interface SubmitEvent {
-    preventDefault: () => void;
-}
-
-interface ApiResponse {
-    message?: string;
-}
-
-const handleSubmit = async (e: SubmitEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     
     try {
-        console.log('Sending request to:', apiUrl);
-        console.log('Request body:', formData);
-        
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-            credentials: 'include', // Add this for cookies if needed
-        });
-        
-        console.log('Response status:', response.status);
+      console.log('Sending request to:', apiUrl);
+      console.log('Request body:', formData);
+      
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+        credentials: 'include', // Add this for cookies if needed
+      });
+      
+      console.log('Response status:', response.status);
+      const data = await response.json();
+      console.log('Response data:', data);
 
-        // Check if the response is JSON
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-            throw new Error('Received non-JSON response');
-        }
+      if (!response.ok) {
+        throw new Error(data.message || 'Submission failed');
+      }
 
-        const data: ApiResponse = await response.json();
-        console.log('Response data:', data);
-
-        if (!response.ok) {
-            throw new Error(data.message || 'Submission failed');
-        }
-
-        setSubmitted(true);
-        setFormData({ firstName: '', lastName: '', email: '' });
+      setSubmitted(true);
+      setFormData({ firstName: '', lastName: '', email: '' });
     } catch (err) {
-        console.error('Error details:', err);
-        if (err instanceof Error) {
-            setError(err.message || 'Something went wrong. Please try again later.');
-        } else {
-            setError('Something went wrong. Please try again later.');
-        }
+      console.error('Error details:', err);
+      setError(err.message || 'Something went wrong. Please try again later.');
     }
-};
+  };
 
   const titleWords = "Nurturing the Future of Regenerative Agriculture".split(" ");
   const coloredTitle = titleWords.map((word, index) => (
@@ -92,7 +66,7 @@ const handleSubmit = async (e: SubmitEvent) => {
     { icon: <Users className="w-6 h-6 sm:w-8 sm:h-8" />, title: "Connect", description: "Bridge the gap between sustainable farmers and conscious investors" },
     { icon: <Coins className="w-6 h-6 sm:w-8 sm:h-8" />, title: "Invest", description: "Support sustainable farming practices with transparent blockchain tracking" },
     { icon: <TreePine className="w-6 h-6 sm:w-8 sm:h-8" />, title: "Grow", description: "Nurture the growth of regenerative agriculture worldwide" },
-    { icon: <Sun className="w-6 h-6 sm:w-8 sm:h-8" />, title: "Impact", description: "Create lasting positive change for our planet&apos;s future" }
+    { icon: <Sun className="w-6 h-6 sm:w-8 sm:h-8" />, title: "Impact", description: "Create lasting positive change for our planet's future" }
   ];
 
   return (
@@ -167,7 +141,7 @@ const handleSubmit = async (e: SubmitEvent) => {
             {submitted ? (
               <div className="bg-emerald-500/20 p-4 sm:p-6 rounded-xl border border-emerald-500 backdrop-blur-sm">
                 <h3 className="text-lg sm:text-xl font-semibold text-emerald-400 mb-2">Welcome to the Future!</h3>
-                <p>We&apos;re excited to have you join our regenerative movement.</p>
+                <p>We're excited to have you join our regenerative movement.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4 bg-black/20 p-4 sm:p-6 rounded-xl border border-emerald-900/50 backdrop-blur-sm">
