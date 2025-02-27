@@ -85,7 +85,7 @@ const handleSubmit = async (e: SubmitEvent) => {
     { icon: <Users className="w-6 h-6 sm:w-8 sm:h-8" />, title: "Connect", description: "Bridge the gap between sustainable farmers and conscious investors" },
     { icon: <Coins className="w-6 h-6 sm:w-8 sm:h-8" />, title: "Invest", description: "Support sustainable farming practices with transparent blockchain tracking" },
     { icon: <TreePine className="w-6 h-6 sm:w-8 sm:h-8" />, title: "Grow", description: "Nurture the growth of regenerative agriculture worldwide" },
-    { icon: <Sun className="w-6 h-6 sm:w-8 sm:h-8" />, title: "Impact", description: "Create lasting positive change for our planet's future" }
+    { icon: <Sun className="w-6 h-6 sm:w-8 sm:h-8" />, title: "Impact", description: "Create lasting positive change for our planet&apos;s future" }
   ];
 
   return (
@@ -160,7 +160,7 @@ const handleSubmit = async (e: SubmitEvent) => {
             {submitted ? (
               <div className="bg-emerald-500/20 p-4 sm:p-6 rounded-xl border border-emerald-500 backdrop-blur-sm">
                 <h3 className="text-lg sm:text-xl font-semibold text-emerald-400 mb-2">Welcome to the Future!</h3>
-                <p>We're excited to have you join our regenerative movement.</p>
+                <p>We&apos;re excited to have you join our regenerative movement.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4 bg-black/20 p-4 sm:p-6 rounded-xl border border-emerald-900/50 backdrop-blur-sm">
