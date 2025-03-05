@@ -10,7 +10,7 @@ const LandingPage = () => {
   const [error, setError] = useState('');
     // Use environment variable for API URL
     const apiUrl = process.env.NEXT_PUBLIC_API_URL 
-    ? `${process.env.NEXT_PUBLIC_API_URL}/api/waitlist/submit`
+    ? `${process.env.NEXT_PUBLIC_API_URL}/api/waitlist/submit` 
     : '/api/waitlist/submit';
 
 

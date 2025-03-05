@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { ChevronRight, Coins, Sprout, Users, TreePine, Sun } from 'lucide-react';
+import CryptoJS from 'crypto-js';
 
 const LandingPage = () => {
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '' });
@@ -45,15 +46,21 @@ const handleSubmit = async (e: SubmitEvent) => {
     }
     
     try {
+        // Encrypt the form data
+        const encryptedData = CryptoJS.AES.encrypt(
+            JSON.stringify(formData),
+            process.env.NEXT_PUBLIC_ENCRYPTION_KEY || 'default_key'
+        ).toString();
+
         console.log('Sending request to:', apiUrl);
-        console.log('Request body:', formData);
+        console.log('Encrypted request body:', encryptedData);
         
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify({ data: encryptedData }),
             credentials: 'include', // Add this for cookies if needed
         });
         
