@@ -60,7 +60,7 @@ const handleSubmit = async (e: SubmitEvent) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ data: encryptedData }),
+            body: JSON.stringify(formData),
             credentials: 'include', // Add this for cookies if needed
         });
         
