@@ -23,7 +23,7 @@ connectDB();
 
 // In index.js
 app.use(cors({
-  origin: 'https://landing-page-lake-nine.vercel.app/', // or whatever port your Next.js app is running on
+  origin: 'https://regen-root.vercel.app/', // or whatever port your Next.js app is running on
   methods: ['POST', 'GET', 'OPTIONS'],
   credentials: true,
   allowedHeaders: ['Content-Type']
