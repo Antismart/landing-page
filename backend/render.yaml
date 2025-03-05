@@ -1,15 +1,24 @@
+# services:
+#   - type: web
+#     name: your-backend-name
+#     env: node
+#     buildCommand: cd server && npm install
+#     startCommand: cd server && npm start
+#     envVars:
+#       - key: NODE_ENV
+#         value: production
+#       - key: MONGODB_URI
+#         sync: false
+#       - key: JWT_SECRET
+#         sync: false
+#       - key: FRONTEND_URL
+#         sync: false
+
 services:
   - type: web
-    name: your-backend-name
+    name: regen-roots-backend
     env: node
-    buildCommand: cd server && npm install
-    startCommand: cd server && npm start
-    envVars:
-      - key: NODE_ENV
-        value: production
-      - key: MONGODB_URI
-        sync: false
-      - key: JWT_SECRET
-        sync: false
-      - key: FRONTEND_URL
-        sync: false
+    buildCommand: "cd backend && npm install"
+    startCommand: "cd backend && npm start"
+    rootDir: "backend"
+    plan: free
