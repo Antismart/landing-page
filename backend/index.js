@@ -23,7 +23,7 @@ connectDB();
 
 // In index.js
 app.use(cors({
-  origin: 'http://localhost:3000', // or whatever port your Next.js app is running on
+  origin: 'https://landing-page-lake-nine.vercel.app/', // or whatever port your Next.js app is running on
   methods: ['POST', 'GET', 'OPTIONS'],
   credentials: true,
   allowedHeaders: ['Content-Type']
@@ -36,23 +36,23 @@ app.use(express.json());
 app.use('/api/waitlist', waitlistRoutes);
 
 // Serve static files from the Next.js build
-if (process.env.NODE_ENV === 'production') {
+// if (process.env.NODE_ENV === 'production') {
   // Serve the static files
-  app.use(express.static(path.join(__dirname, '../frontend/out')));
+  // app.use(express.static(path.join(__dirname, '../frontend/out')));
   
-  // Serve the CSS files with correct MIME type
-  app.use('/_next', express.static(path.join(__dirname, '../frontend/out/_next'), {
-    setHeaders: (res, path) => {
-      if (path.endsWith('.css')) {
-        res.setHeader('Content-Type', 'text/css');
-      }
-    }
-  }));
+  // // Serve the CSS files with correct MIME type
+  // app.use('/_next', express.static(path.join(__dirname, '../frontend/out/_next'), {
+  //   setHeaders: (res, path) => {
+  //     if (path.endsWith('.css')) {
+  //       res.setHeader('Content-Type', 'text/css');
+  //     }
+  //   }
+  // }));
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/out/index.html'));
-  });
-}
+  // app.get('*', (req, res) => {
+  //   res.sendFile(path.join(__dirname, '../frontend/out/index.html'));
+  // });
+// }
 
 const PORT = process.env.PORT || 5000;
 
