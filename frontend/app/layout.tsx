@@ -2,6 +2,8 @@
 import { Jacques_Francois } from 'next/font/google';
 import './globals.css';
 import React, { ReactNode } from 'react';
+import { GoogleAnalytics } from '@next/third-parties/google'
+
 
 const jacquesFrancois = Jacques_Francois({
   weight: '400',
@@ -24,6 +26,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className={jacquesFrancois.className}>
         {children}
       </body>
+      <GoogleAnalytics gaId="G-DSBLXDG0C1" />
+
     </html>
   )
 }
