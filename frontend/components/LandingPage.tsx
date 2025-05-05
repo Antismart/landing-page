@@ -1,13 +1,14 @@
 'use client'
 
 import React, { useState } from 'react';
-import { ChevronRight, Coins, Sprout, Users, TreePine, Sun } from 'lucide-react';
+import { ChevronRight, Coins, Sprout, Users, TreePine, Sun, Loader2 } from 'lucide-react';
 import CryptoJS from 'crypto-js';
 
 const LandingPage = () => {
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '' });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
     // Use environment variable for API URL
     const apiUrl = process.env.NEXT_PUBLIC_API_URL 
     ? `${process.env.NEXT_PUBLIC_API_URL}/api/waitlist/submit`
@@ -38,10 +39,12 @@ interface ApiResponse {
 const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
 
     // Frontend validation for empty fields
     if (!formData.firstName || !formData.lastName || !formData.email) {
         setError('All fields are required.');
+        setIsLoading(false);
         return;
     }
     
@@ -88,6 +91,8 @@ const handleSubmit = async (e: SubmitEvent) => {
         } else {
             setError('Something went wrong. Please try again later.');
         }
+    } finally {
+        setIsLoading(false);
     }
 };
 
@@ -193,6 +198,7 @@ const handleSubmit = async (e: SubmitEvent) => {
                       onChange={handleChange}
                       className="w-full px-3 py-2 bg-gray-800/50 rounded-lg focus:ring-2 focus:ring-emerald-400 outline-none"
                       placeholder="First Name"
+                      disabled={isLoading}
                     />
                   </div>
                   <div>
@@ -203,6 +209,7 @@ const handleSubmit = async (e: SubmitEvent) => {
                       onChange={handleChange}
                       className="w-full px-3 py-2 bg-gray-800/50 rounded-lg focus:ring-2 focus:ring-emerald-400 outline-none"
                       placeholder="Last Name"
+                      disabled={isLoading}
                     />
                   </div>
                 </div>
@@ -213,14 +220,25 @@ const handleSubmit = async (e: SubmitEvent) => {
                   onChange={handleChange}
                   className="w-full px-3 py-2 bg-gray-800/50 rounded-lg focus:ring-2 focus:ring-emerald-400 outline-none"
                   placeholder="Email Address"
+                  disabled={isLoading}
                 />
                 {error && <div className="text-red-400 text-sm">{error}</div>}
                 <button
                   type="submit"
-                  className="w-full px-4 sm:px-6 py-2 sm:py-3 bg-emerald-500 hover:bg-emerald-600 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all transform hover:scale-105"
+                  disabled={isLoading}
+                  className={`w-full px-4 sm:px-6 py-2 sm:py-3 bg-emerald-500 hover:bg-emerald-600 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all ${isLoading ? 'opacity-70 cursor-not-allowed' : 'transform hover:scale-105'}`}
                 >
-                  Join Waitlist
-                  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      Join Waitlist
+                      <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </>
+                  )}
                 </button>
               </form>
             )}

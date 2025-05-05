@@ -13,7 +13,22 @@ const jacquesFrancois = Jacques_Francois({
 
 export const metadata = {
   title: 'Regen Roots',
-  description: 'Decentralized platform for regenerative agriculture',
+  description: 'Empowering farmers, investors  & earth-loving foodies to grow a better world.',
+  url: 'https://regenroots.xyz',
+  type: 'website',
+  siteName: 'Regen Roots',
+  twitter: {
+    card: 'summary_large_image',
+    site: '@RootsRegen',
+    handle: '@RootsRegen',
+  },
+  openGraph: {
+    title: 'Regen Roots',
+    description: 'Empowering farmers, investors  & earth-loving foodies to grow a better world.',
+    url: 'https://regenroots.xyz',
+    siteName: 'Regen Roots',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
