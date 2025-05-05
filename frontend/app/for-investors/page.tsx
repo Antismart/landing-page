@@ -25,13 +25,13 @@ export default function ForInvestors() {
       </div>
       
       <p className="max-w-lg text-lg text-gray-300 mb-8">
-        We're developing innovative investment opportunities that allow you to support sustainable farming
+        We&apos;re developing innovative investment opportunities that allow you to support sustainable farming
         while earning returns. Our blockchain-backed platform will provide transparency at every stage.
       </p>
       
       <div className="bg-black/20 p-6 rounded-xl border border-emerald-900/50 backdrop-blur-sm mb-8 max-w-md">
         <p className="text-gray-300 text-sm italic">
-          "The best investment on Earth is earth." — Louis Glickman
+          &ldquo;The best investment on Earth is earth.&rdquo; — Louis Glickman
         </p>
       </div>
       

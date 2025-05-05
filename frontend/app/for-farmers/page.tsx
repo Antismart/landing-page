@@ -23,13 +23,13 @@ export default function ForFarmers() {
       </div>
       
       <p className="max-w-lg text-lg text-gray-300 mb-8">
-        We're cultivating resources and tools designed specifically for regenerative farmers.
-        Soon you'll discover how our platform helps you connect with conscious investors and grow sustainably.
+        We&apos;re cultivating resources and tools designed specifically for regenerative farmers.
+        Soon you&apos;ll discover how our platform helps you connect with conscious investors and grow sustainably.
       </p>
       
       <div className="bg-black/20 p-6 rounded-xl border border-emerald-900/50 backdrop-blur-sm mb-8 max-w-md">
         <p className="text-gray-300 text-sm italic">
-          "The farmer is the only man in our economy who buys everything at retail, sells everything at wholesale, and pays the freight both ways." — John F. Kennedy
+          &ldquo;The farmer is the only man in our economy who buys everything at retail, sells everything at wholesale, and pays the freight both ways.&rdquo; — John F. Kennedy
         </p>
       </div>
       

@@ -31,7 +31,7 @@ export default function Blog() {
       
       <div className="bg-black/20 p-6 rounded-xl border border-emerald-900/50 backdrop-blur-sm mb-8 max-w-md">
         <p className="text-gray-300 text-sm italic">
-          "To forget how to dig the earth and to tend the soil is to forget ourselves." — Mahatma Gandhi
+          &ldquo;To forget how to dig the earth and to tend the soil is to forget ourselves.&rdquo; — Mahatma Gandhi
         </p>
       </div>
       

@@ -23,13 +23,13 @@ export default function HowItWorks() {
       </div>
       
       <p className="max-w-lg text-lg text-gray-300 mb-8">
-        We're crafting a detailed explanation of our regenerative agriculture platform.
+        We&apos;re crafting a detailed explanation of our regenerative agriculture platform.
         Check back soon to learn how we connect farmers, investors, and earth-loving foodies!
       </p>
       
       <div className="bg-black/20 p-6 rounded-xl border border-emerald-900/50 backdrop-blur-sm mb-8 max-w-md">
         <p className="text-gray-300 text-sm italic">
-          "The secret of getting ahead is getting started." - Mark Twain
+          &ldquo;The secret of getting ahead is getting started.&rdquo; - Mark Twain
         </p>
       </div>
       
