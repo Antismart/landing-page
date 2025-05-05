@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { ChevronRight, Coins, Sprout, Users, TreePine, Sun, Loader2 } from 'lucide-react';
 import CryptoJS from 'crypto-js';
+import Footer from './Footer';
 
 const LandingPage = () => {
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '' });
@@ -259,6 +260,9 @@ const handleSubmit = async (e: SubmitEvent) => {
           </div>
         </div>
       </div>
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
