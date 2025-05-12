@@ -10,7 +10,12 @@
 body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-rgb));
-  font-family: 'Jacques Francois', serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: var(--font-montserrat), system-ui, sans-serif;
+  font-weight: 700;
 }
 
 @keyframes float {
@@ -24,4 +29,62 @@ body {
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
+}
+
+/* Enhanced button styles */
+.btn {
+  @apply px-4 py-2 rounded-lg transition-all duration-300 font-medium flex items-center justify-center gap-2;
+}
+
+.btn-primary {
+  @apply bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg hover:shadow-emerald-700/30;
+}
+
+.btn-secondary {
+  @apply bg-transparent border border-emerald-500 hover:bg-emerald-600/20 text-white;
+}
+
+.btn-lg {
+  @apply px-6 py-3 text-base;
+}
+
+.btn-sm {
+  @apply px-3 py-1.5 text-sm;
+}
+
+/* Card styles */
+.card {
+  @apply bg-black/30 backdrop-blur-md rounded-xl border border-emerald-900/50 transition-all duration-300;
+}
+
+.card-hover {
+  @apply hover:border-emerald-500/50 hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-900/30;
+}
+
+/* Gradient text */
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-300;
+}
+
+/* Focus styles */
+input:focus, textarea:focus, select:focus {
+  @apply outline-none ring-2 ring-emerald-400 ring-opacity-50;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-emerald-900 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-emerald-800;
 }

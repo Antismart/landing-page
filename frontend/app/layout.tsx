@@ -13,7 +13,7 @@ const jacquesFrancois = Jacques_Francois({
 
 export const metadata = {
   title: 'Regen Roots',
-  description: 'Empowering farmers, investors  & earth-loving foodies to grow a better world.',
+  description: 'Empowering farmers, investors & earth-loving foodies to grow a better world.',
   url: 'https://regenroots.xyz',
   type: 'website',
   siteName: 'Regen Roots',
@@ -24,7 +24,7 @@ export const metadata = {
   },
   openGraph: {
     title: 'Regen Roots',
-    description: 'Empowering farmers, investors  & earth-loving foodies to grow a better world.',
+    description: 'Empowering farmers, investors & earth-loving foodies to grow a better world.',
     url: 'https://regenroots.xyz',
     siteName: 'Regen Roots',
     type: 'website',
