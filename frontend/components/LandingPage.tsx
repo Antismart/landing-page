@@ -762,7 +762,7 @@ const LandingPage = () => {
                             <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 via-green-500 to-emerald-600 rounded-full shadow-lg shadow-emerald-500/40 group-hover:shadow-xl group-hover:shadow-emerald-500/60 transition-all duration-300"></div>
                             
                             {/* Inner circle with texture */}
-                            <div className="absolute inset-2 bg-gradient-to-br from-white to-emerald-50 rounded-full border-2 border-emerald-200 flex items-center justify-center relative overflow-hidden">
+                            <div className="absolute inset-2 bg-gradient-to-br from-white to-emerald-50 rounded-full border-2 border-emerald-200 flex items-center justify-center overflow-hidden">
                               {/* Subtle pattern overlay */}
                               <div className="absolute inset-0 opacity-10">
                                 {[...Array(8)].map((_, i) => (
@@ -1124,7 +1124,7 @@ const LandingPage = () => {
                 </Link>
               </div>
               
-              <div className="flex items-center justify-center gap-6 text-xs sm:text-sm text-gray-400">
+              {/* <div className="flex items-center justify-center gap-6 text-xs sm:text-sm text-gray-400">
                 <div className="flex items-center gap-1">
                   <Shield className="w-4 h-4 text-emerald-400" />
                   <span>Blockchain Secured</span>
@@ -1137,7 +1137,7 @@ const LandingPage = () => {
                   <TreePine className="w-4 h-4 text-emerald-400" />
                   <span>Real Impact</span>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
