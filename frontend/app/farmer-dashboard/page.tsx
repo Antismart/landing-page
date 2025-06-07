@@ -49,7 +49,7 @@ export default function FarmerDashboard() {
   }, [isClient, router]);
 
   // For demo purposes only - this would be populated from API/backend in production
-  const [farmProfile, setFarmProfile] = useState({
+  const [farmProfile] = useState({
     name: 'Green Valley Organics',
     location: 'Muranga County, Kenya',
     size: '45 acres',
@@ -205,7 +205,7 @@ export default function FarmerDashboard() {
                 <Sprout className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-emerald-400 mb-3 sm:mb-4" />
                 <h3 className="text-lg sm:text-xl font-medium mb-2">Assessment In Progress</h3>
                 <p className="text-gray-300 text-sm sm:text-base max-w-md mx-auto mb-4 sm:mb-6 px-2">
-                  Our experts are currently analyzing your farm's regenerative potential. This process typically takes 5-7 business days.
+                  Our experts are currently analyzing your farm&apos;s regenerative potential. This process typically takes 5-7 business days.
                 </p>
                 <div className="w-full max-w-md mx-auto bg-gray-700 rounded-full h-3 sm:h-4 px-2 sm:px-0">
                   <div className="bg-emerald-500 h-3 sm:h-4 rounded-full w-1/2"></div>

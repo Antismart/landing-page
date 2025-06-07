@@ -293,7 +293,7 @@ const LandingPage = () => {
             {submitted ? (
               <div className="bg-emerald-500/20 p-4 sm:p-6 rounded-xl border border-emerald-500 backdrop-blur-sm">
                 <h3 className="text-lg sm:text-xl font-semibold text-emerald-400 mb-2">Welcome to the Future!</h3>
-                <p className="text-sm sm:text-base">We're excited to have you join our regenerative movement.</p>
+                <p className="text-sm sm:text-base">We&apos;re excited to have you join our regenerative movement.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4 bg-black/20 p-4 sm:p-6 rounded-xl border border-emerald-900/50 backdrop-blur-sm">
@@ -375,8 +375,8 @@ const LandingPage = () => {
             
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 sm:mb-4 relative z-10">Ready to Join the Movement?</h2>
             <p className="text-sm sm:text-base text-gray-300 mb-6 max-w-2xl mx-auto relative z-10">
-              Whether you're a farmer looking to adopt regenerative practices or an investor seeking impactful opportunities,
-              we're building the future of sustainable agriculture together.
+              Whether you&apos;re a farmer looking to adopt regenerative practices or an investor seeking impactful opportunities,
+              we&apos;re building the future of sustainable agriculture together.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center relative z-10">
               <Link 

@@ -44,7 +44,7 @@ export default function InvestorDashboard() {
   }, [isClient, router]);
 
   // For demo purposes only - this would be populated from API/backend in production
-  const [investorProfile, setInvestorProfile] = useState({
+  const [investorProfile] = useState({
     name: 'Eco Ventures Capital',
     type: 'Institutional Investor',
     balance: '$250,000',
