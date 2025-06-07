@@ -189,11 +189,11 @@ const LandingPage = () => {
         {[...Array(18)].map((_, i) => (
           <div
             key={`v-${i}`}
-            className="absolute h-full w-px bg-gradient-to-b from-transparent via-emerald-400/25 to-transparent animate-pulse hidden sm:block"
+            className="absolute h-full w-px bg-gradient-to-b from-transparent via-emerald-400/25 to-transparent animate-pulse block"
             style={{
               left: `${(i + 1) * 5}%`,
               animationDelay: `${i * 0.2}s`,
-              opacity: 0.3 + (i % 3) * 0.3,
+              opacity: 0.15 + (i % 3) * 0.15, // Reduced opacity for mobile
               animationDuration: `${3 + (i % 3)}s`
             }}
           />
@@ -201,11 +201,11 @@ const LandingPage = () => {
         {[...Array(12)].map((_, i) => (
           <div
             key={`h-${i}`}
-            className="absolute w-full h-px bg-gradient-to-r from-transparent via-emerald-400/25 to-transparent animate-pulse hidden sm:block"
+            className="absolute w-full h-px bg-gradient-to-r from-transparent via-emerald-400/25 to-transparent animate-pulse block"
             style={{
               top: `${(i + 1) * 8}%`,
               animationDelay: `${i * 0.3}s`,
-              opacity: 0.3 + (i % 3) * 0.3,
+              opacity: 0.15 + (i % 3) * 0.15, // Reduced opacity for mobile
               animationDuration: `${3 + (i % 3)}s`
             }}
           />
@@ -215,7 +215,7 @@ const LandingPage = () => {
         {[...Array(8)].map((_, i) => (
           <div
             key={`d-${i}`}
-            className="absolute w-full h-px bg-gradient-to-r from-transparent via-emerald-300/15 to-transparent animate-pulse hidden lg:block"
+            className="absolute w-full h-px bg-gradient-to-r from-transparent via-emerald-300/15 to-transparent animate-pulse hidden md:block"
             style={{
               top: '50%',
               left: '-50%',
