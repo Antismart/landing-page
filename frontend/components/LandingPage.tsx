@@ -177,7 +177,7 @@ const LandingPage = () => {
   // Removed image gallery
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-900 via-gray-900 to-emerald-900 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-green-900 via-black to-emerald-900 relative overflow-hidden">
       {/* Enhanced Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Animated Gradient Orbs */}
