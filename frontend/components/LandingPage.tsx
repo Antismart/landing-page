@@ -177,7 +177,7 @@ const LandingPage = () => {
   // Removed image gallery
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-900 via-black to-emerald-900 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-green-900 via-zinc-950 to-emerald-900 relative overflow-hidden">
       {/* Enhanced Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Animated Gradient Orbs */}
@@ -385,7 +385,7 @@ const LandingPage = () => {
                   href="/signup?type=farmer" 
                   className="group px-8 py-4 sm:px-10 sm:py-5 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white rounded-2xl transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-3 text-lg sm:text-xl font-semibold shadow-2xl hover:shadow-emerald-500/30 border border-emerald-500/50"
                 >
-                  <Sprout className="w-6 h-6 group-hover:animate-bounce" />
+                  {/* <Sprout className="w-6 h-6 group-hover:animate-bounce" /> */}
                   <span>Start Farming</span>
                   <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
                 </Link>
@@ -393,7 +393,7 @@ const LandingPage = () => {
                   href="/signup?type=investor" 
                   className="group px-8 py-4 sm:px-10 sm:py-5 border-2 border-emerald-500 bg-emerald-500/10 backdrop-blur-sm hover:bg-emerald-600/30 text-white rounded-2xl transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-3 text-lg sm:text-xl font-semibold hover:shadow-2xl hover:shadow-emerald-500/20"
                 >
-                  <Coins className="w-6 h-6 group-hover:animate-bounce" />
+                  {/* <Coins className="w-6 h-6 group-hover:animate-bounce" /> */}
                   <span>Start Investing</span>
                   <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
                 </Link>
@@ -1110,7 +1110,7 @@ const LandingPage = () => {
                   href="/signup?type=farmer" 
                   className="px-6 py-3 sm:px-8 sm:py-4 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-lg transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 text-base sm:text-lg font-semibold shadow-lg hover:shadow-emerald-500/25"
                 >
-                  <Sprout className="w-5 h-5" />
+                  {/* <Sprout className="w-5 h-5" /> */}
                   <span>Get Funded as a Farmer</span>
                   <ChevronRight className="w-5 h-5" />
                 </Link>
@@ -1118,7 +1118,7 @@ const LandingPage = () => {
                   href="/signup?type=investor" 
                   className="px-6 py-3 sm:px-8 sm:py-4 border-2 border-emerald-500 hover:bg-emerald-600/20 active:bg-emerald-600/40 text-white rounded-lg transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 text-base sm:text-lg font-semibold"
                 >
-                  <TrendingUp className="w-5 h-5" />
+                  {/* <TrendingUp className="w-5 h-5" /> */}
                   <span>Start Investing Today</span>
                   <ChevronRight className="w-5 h-5" />
                 </Link>
