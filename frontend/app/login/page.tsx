@@ -4,8 +4,12 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Sprout } from 'lucide-react';
 import AuthForm from '@/components/auth/AuthForm';
+import { useSearchParams } from 'next/navigation';
 
 export default function LoginPage() {
+  const searchParams = useSearchParams();
+  const userType = searchParams.get('type'); // Get 'type' from URL query params
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-900 via-black to-emerald-900 flex flex-col">
       {/* Header */}
@@ -33,7 +37,7 @@ export default function LoginPage() {
           <span className="text-emerald-400">Welcome</span> Back
         </h1>
         
-        <AuthForm type="login" />
+        <AuthForm type="login" defaultUserType={userType} />
         
         <div className="mt-8 max-w-md text-center text-sm text-gray-400">
           By logging in, you agree to our 

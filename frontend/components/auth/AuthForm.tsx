@@ -7,9 +7,10 @@ import { useRouter } from 'next/navigation';
 
 interface AuthFormProps {
   type: 'login' | 'signup';
+  defaultUserType?: string | null;
 }
 
-const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
+const AuthForm: React.FC<AuthFormProps> = ({ type, defaultUserType }) => {
   const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: '',
@@ -17,7 +18,9 @@ const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
     email: '',
     password: '',
     confirmPassword: '',
-    userType: 'farmer', // default to farmer
+    userType: defaultUserType && (defaultUserType === 'farmer' || defaultUserType === 'investor') 
+      ? defaultUserType 
+      : 'farmer', // default to farmer if no valid type provided
   });
   
   const [isLoading, setIsLoading] = useState(false);

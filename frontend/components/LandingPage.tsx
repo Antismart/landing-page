@@ -380,14 +380,14 @@ const LandingPage = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center relative z-10">
               <Link 
-                href="/for-farmers" 
+                href="/signup?type=farmer" 
                 className="px-4 py-2.5 sm:px-6 sm:py-3 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-lg transition-colors flex items-center justify-center gap-2 text-sm sm:text-base"
               >
                 <span>For Farmers</span>
                 <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
               <Link 
-                href="/for-investors" 
+                href="/signup?type=investor" 
                 className="px-4 py-2.5 sm:px-6 sm:py-3 border border-emerald-500 hover:bg-emerald-600/20 active:bg-emerald-600/40 text-white rounded-lg transition-colors flex items-center justify-center gap-2 text-sm sm:text-base"
               >
                 <span>For Investors</span>
