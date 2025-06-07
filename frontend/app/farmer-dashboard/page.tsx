@@ -3,7 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Tractor, Sprout, LineChart, ClipboardList, Scan, CreditCard, Calendar, Leaf, Loader2, LogOut, Menu, X, ArrowUpRight, CheckCircle, Clock, FileText, MessageSquare, Plus } from 'lucide-react';
+import { 
+  ArrowLeft, Tractor, Sprout, LineChart, Scan, CreditCard, 
+  Leaf, Loader2, LogOut, Menu, X, CheckCircle, 
+  Clock, FileText, MessageSquare, Plus, TrendingUp, DollarSign, 
+  Award, BarChart3, Zap, Star, Bell
+} from 'lucide-react';
 
 export default function FarmerDashboard() {
   const router = useRouter();
@@ -55,11 +60,51 @@ export default function FarmerDashboard() {
     size: '45 acres',
     status: 'Tokenization Eligible',
     completionPercent: 85,
-    verification: 'Pending'
+    verification: 'Verified',
+    crops: ['Maize', 'Beans', 'Coffee'],
+    carbonCredits: 43,
+    monthlyRevenue: 12500,
+    projectsCount: 3
   });
 
+  // Enhanced stats data
+  const dashboardStats = [
+    {
+      title: 'Total Funding',
+      value: '$145,000',
+      change: '+$25,000',
+      changeType: 'increase',
+      icon: DollarSign,
+      color: 'emerald'
+    },
+    {
+      title: 'Carbon Credits',
+      value: '43 tons',
+      change: '+8 tons',
+      changeType: 'increase',
+      icon: Leaf,
+      color: 'green'
+    },
+    {
+      title: 'Active Projects',
+      value: '3',
+      change: '+1 project',
+      changeType: 'increase',
+      icon: BarChart3,
+      color: 'blue'
+    },
+    {
+      title: 'Monthly Revenue',
+      value: '$12,500',
+      change: '+15%',
+      changeType: 'increase',
+      icon: TrendingUp,
+      color: 'violet'
+    }
+  ];
+
   // Tabs state
-  const [activeTab, setActiveTab] = useState('profile');
+  const [activeTab, setActiveTab] = useState('overview');
 
   const handleTabChange = (tabId: string) => {
     setActiveTab(tabId);
@@ -67,14 +112,14 @@ export default function FarmerDashboard() {
   };
 
   const menuItems = [
-    { id: 'profile', label: 'Farm Profile', icon: <Tractor size={20} /> },
-    { id: 'assessment', label: 'Assessment', icon: <Sprout size={20} /> },
-    { id: 'tokenization', label: 'Tokenization', icon: <Scan size={20} /> },
-    { id: 'loans', label: 'Loan Applications', icon: <CreditCard size={20} /> },
-    { id: 'implementation', label: 'Implementation', icon: <ClipboardList size={20} /> },
-    { id: 'monitoring', label: 'Monitoring', icon: <LineChart size={20} /> },
-    { id: 'marketplace', label: 'Marketplace', icon: <Leaf size={20} /> },
-    { id: 'payments', label: 'Payments', icon: <Calendar size={20} /> },
+    { id: 'overview', label: 'Overview', icon: <BarChart3 size={20} />, description: 'Dashboard overview' },
+    { id: 'profile', label: 'Farm Profile', icon: <Tractor size={20} />, description: 'Manage farm details' },
+    { id: 'projects', label: 'Projects', icon: <Sprout size={20} />, description: 'Active projects' },
+    { id: 'tokenization', label: 'Tokenization', icon: <Scan size={20} />, description: 'Asset tokenization' },
+    { id: 'funding', label: 'Funding', icon: <CreditCard size={20} />, description: 'Financial resources' },
+    { id: 'monitoring', label: 'Monitoring', icon: <LineChart size={20} />, description: 'Progress tracking' },
+    { id: 'marketplace', label: 'Marketplace', icon: <Leaf size={20} />, description: 'Carbon credits' },
+    { id: 'rewards', label: 'Rewards', icon: <Award size={20} />, description: 'Achievements' },
   ];
   
   // Handle logout
@@ -135,122 +180,657 @@ export default function FarmerDashboard() {
   // Render content based on active tab
   const renderContent = () => {
     switch (activeTab) {
+      case 'overview':
+        return (
+          <div className="space-y-6">
+            {/* Welcome Section */}
+            <div className="bg-gradient-to-r from-emerald-900/30 to-green-900/30 rounded-2xl p-6 backdrop-blur-sm border border-emerald-800/50">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">
+                    Welcome back, {userName.split(' ')[0]} 👋
+                  </h1>
+                  <p className="text-emerald-200 text-sm sm:text-base">
+                    {farmProfile.name} • {farmProfile.location}
+                  </p>
+                </div>
+                <div className="hidden sm:flex items-center space-x-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-emerald-300">{farmProfile.projectsCount}</div>
+                    <div className="text-xs text-gray-400">Projects</div>
+                  </div>
+                  <div className="w-px h-12 bg-emerald-800"></div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-emerald-300">{farmProfile.carbonCredits}</div>
+                    <div className="text-xs text-gray-400">Carbon Credits</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Stats Cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {dashboardStats.map((stat, index) => {
+                const IconComponent = stat.icon;
+                return (
+                  <div key={index} className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-emerald-900/50 hover:border-emerald-700/50 transition-all group">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className={`p-2 rounded-lg bg-${stat.color}-900/30`}>
+                        <IconComponent className={`w-5 h-5 text-${stat.color}-400`} />
+                      </div>
+                      <span className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors">
+                        {stat.changeType === 'increase' ? '↗' : '↘'}
+                      </span>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-lg sm:text-xl font-bold text-white">{stat.value}</p>
+                      <p className="text-xs text-gray-400">{stat.title}</p>
+                      <p className={`text-xs ${stat.changeType === 'increase' ? 'text-emerald-400' : 'text-red-400'}`}>
+                        {stat.change}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Quick Actions */}
+            <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+              <h2 className="text-lg font-bold text-white mb-4">Quick Actions</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <button 
+                  onClick={() => setActiveTab('projects')}
+                  className="flex flex-col items-center p-4 bg-emerald-900/30 hover:bg-emerald-800/40 rounded-lg transition-all group"
+                >
+                  <Sprout className="w-8 h-8 text-emerald-400 mb-2 group-hover:scale-110 transition-transform" />
+                  <span className="text-sm font-medium text-white">View Projects</span>
+                </button>
+                <button 
+                  onClick={() => setActiveTab('tokenization')}
+                  className="flex flex-col items-center p-4 bg-blue-900/30 hover:bg-blue-800/40 rounded-lg transition-all group"
+                >
+                  <Scan className="w-8 h-8 text-blue-400 mb-2 group-hover:scale-110 transition-transform" />
+                  <span className="text-sm font-medium text-white">Tokenize Farm</span>
+                </button>
+                <button 
+                  onClick={() => setActiveTab('funding')}
+                  className="flex flex-col items-center p-4 bg-violet-900/30 hover:bg-violet-800/40 rounded-lg transition-all group"
+                >
+                  <CreditCard className="w-8 h-8 text-violet-400 mb-2 group-hover:scale-110 transition-transform" />
+                  <span className="text-sm font-medium text-white">Get Funding</span>
+                </button>
+                <button 
+                  onClick={() => setActiveTab('marketplace')}
+                  className="flex flex-col items-center p-4 bg-green-900/30 hover:bg-green-800/40 rounded-lg transition-all group"
+                >
+                  <Leaf className="w-8 h-8 text-green-400 mb-2 group-hover:scale-110 transition-transform" />
+                  <span className="text-sm font-medium text-white">Marketplace</span>
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Recent Activity */}
+              <div className="lg:col-span-2 bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-bold text-white">Recent Projects</h2>
+                  <button 
+                    onClick={() => setActiveTab('projects')}
+                    className="text-emerald-400 text-sm hover:text-emerald-300 transition-colors"
+                  >
+                    View All
+                  </button>
+                </div>
+                <div className="space-y-4">
+                  {projects.slice(0, 2).map(project => (
+                    <div key={project.id} className="bg-gray-900/50 rounded-lg p-4 border border-gray-800/80 hover:border-gray-700/80 transition-all">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="font-medium text-white">{project.title}</h3>
+                        <span className={`text-xs px-2 py-1 rounded-full ${
+                          project.status === 'active' 
+                            ? 'bg-emerald-900/40 text-emerald-300' 
+                            : 'bg-amber-900/30 text-amber-300'
+                        }`}>
+                          {project.status}
+                        </span>
+                      </div>
+                      <div className="mb-3">
+                        <div className="flex justify-between text-sm mb-1">
+                          <span className="text-gray-400">Progress</span>
+                          <span className="text-emerald-300">{project.progress}%</span>
+                        </div>
+                        <div className="w-full bg-gray-800 rounded-full h-2">
+                          <div 
+                            className="bg-emerald-500 h-2 rounded-full transition-all duration-300"
+                            style={{ width: `${project.progress}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                      <div className="flex justify-between text-sm text-gray-400">
+                        <span>Next: {project.nextMilestone}</span>
+                        <span>{project.daysLeft} days left</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Notifications & Updates */}
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-bold text-white">Updates</h2>
+                  <Bell className="w-5 h-5 text-gray-400" />
+                </div>
+                <div className="space-y-3">
+                  {notifications.slice(0, 3).map(notification => (
+                    <div key={notification.id} className="bg-gray-900/50 rounded-lg p-3 border border-gray-800/80">
+                      <div className="flex items-start gap-3">
+                        {notification.type === 'message' ? (
+                          <div className="bg-blue-900/30 p-1.5 rounded">
+                            <MessageSquare className="w-4 h-4 text-blue-400" />
+                          </div>
+                        ) : notification.type === 'document' ? (
+                          <div className="bg-amber-900/30 p-1.5 rounded">
+                            <FileText className="w-4 h-4 text-amber-400" />
+                          </div>
+                        ) : (
+                          <div className="bg-emerald-900/30 p-1.5 rounded">
+                            <CheckCircle className="w-4 h-4 text-emerald-400" />
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-white leading-tight">{notification.content}</p>
+                          <p className="text-xs text-gray-500 mt-1">{notification.time}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
       case 'profile':
         return (
-          <div className="space-y-4 sm:space-y-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-emerald-400">Farm Profile</h2>
-            <div className="bg-black/30 rounded-xl p-4 sm:p-6 backdrop-blur-sm border border-emerald-900/50">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                <div>
-                  <div className="h-48 sm:h-64 bg-emerald-800/30 rounded-lg flex items-center justify-center">
-                    <div className="text-center">
-                      <Tractor className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-emerald-400 mb-2" />
-                      <p className="text-gray-300 text-sm sm:text-base">Farm Image Placeholder</p>
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-white">Farm Profile</h2>
+              <div className="flex gap-3">
+                <button className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-sm font-medium transition-colors">
+                  Edit Profile
+                </button>
+                <button className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors">
+                  Upload Documents
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Farm Overview */}
+              <div className="lg:col-span-2 bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div className="h-48 bg-gradient-to-br from-emerald-800/30 to-green-800/30 rounded-lg flex items-center justify-center border border-emerald-700/30">
+                      <div className="text-center">
+                        <Tractor className="w-16 h-16 mx-auto text-emerald-400 mb-3" />
+                        <p className="text-gray-300">Farm Image</p>
+                        <button className="mt-2 text-sm text-emerald-400 hover:text-emerald-300">Upload Photo</button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-gray-400 text-sm">Farm Name</label>
+                      <p className="text-lg font-medium text-white">{farmProfile.name}</p>
+                    </div>
+                    <div>
+                      <label className="text-gray-400 text-sm">Location</label>
+                      <p className="text-white">{farmProfile.location}</p>
+                    </div>
+                    <div>
+                      <label className="text-gray-400 text-sm">Land Size</label>
+                      <p className="text-white">{farmProfile.size}</p>
+                    </div>
+                    <div>
+                      <label className="text-gray-400 text-sm">Primary Crops</label>
+                      <div className="flex flex-wrap gap-2 mt-1">
+                        {farmProfile.crops.map((crop, index) => (
+                          <span key={index} className="px-2 py-1 bg-emerald-900/40 text-emerald-300 rounded text-sm">
+                            {crop}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="space-y-3 sm:space-y-4">
-                  <div>
-                    <p className="text-gray-400 text-xs sm:text-sm">Farm Name</p>
-                    <p className="text-base sm:text-lg font-medium">{farmProfile.name}</p>
+
+                <div className="mt-6 pt-6 border-t border-gray-800/80">
+                  <h3 className="text-lg font-medium text-white mb-4">Profile Completion</h3>
+                  <div className="w-full bg-gray-800 rounded-full h-3">
+                    <div 
+                      className="bg-gradient-to-r from-emerald-500 to-green-500 h-3 rounded-full transition-all duration-500"
+                      style={{ width: `${farmProfile.completionPercent}%` }}
+                    ></div>
                   </div>
-                  <div>
-                    <p className="text-gray-400 text-xs sm:text-sm">Location</p>
-                    <p className="text-sm sm:text-base">{farmProfile.location}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-400 text-xs sm:text-sm">Land Size</p>
-                    <p className="text-sm sm:text-base">{farmProfile.size}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-400 text-xs sm:text-sm">Verification Status</p>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-200 text-yellow-800">
+                  <p className="mt-2 text-sm text-gray-400">
+                    {farmProfile.completionPercent}% complete. Complete your profile to unlock all features.
+                  </p>
+                </div>
+              </div>
+
+              {/* Quick Stats */}
+              <div className="space-y-4">
+                <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-emerald-900/50">
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Scan className="w-6 h-6 text-emerald-400" />
+                    </div>
+                    <h3 className="font-medium text-white">Verification Status</h3>
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-900/40 text-emerald-300 mt-2">
                       {farmProfile.verification}
                     </span>
                   </div>
                 </div>
-              </div>
-              
-              <div className="mt-6 sm:mt-8">
-                <h3 className="text-base sm:text-lg font-medium mb-2 sm:mb-4">Profile Completion</h3>
-                <div className="w-full bg-gray-700 rounded-full h-3 sm:h-4">
-                  <div 
-                    className="bg-emerald-500 h-3 sm:h-4 rounded-full" 
-                    style={{ width: `${farmProfile.completionPercent}%` }}
-                  ></div>
+
+                <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-emerald-900/50">
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Leaf className="w-6 h-6 text-green-400" />
+                    </div>
+                    <h3 className="font-medium text-white">Carbon Credits</h3>
+                    <p className="text-2xl font-bold text-green-400 mt-1">{farmProfile.carbonCredits}</p>
+                    <p className="text-sm text-gray-400">tons CO₂</p>
+                  </div>
                 </div>
-                <p className="mt-2 text-xs sm:text-sm text-gray-400">
-                  {farmProfile.completionPercent}% complete. Complete your profile to enable full platform access.
-                </p>
-              </div>
-              
-              <div className="mt-6 sm:mt-8 flex flex-wrap gap-2 sm:gap-4">
-                <button className="px-3 py-1.5 sm:px-4 sm:py-2 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 transition-colors rounded-lg flex items-center gap-2 text-sm sm:text-base">
-                  <span>Edit Profile</span>
-                </button>
-                <button className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-700 hover:bg-gray-600 active:bg-gray-800 transition-colors rounded-lg flex items-center gap-2 text-sm sm:text-base">
-                  <span>Upload Documents</span>
-                </button>
+
+                <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-emerald-900/50">
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-violet-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <DollarSign className="w-6 h-6 text-violet-400" />
+                    </div>
+                    <h3 className="font-medium text-white">Monthly Revenue</h3>
+                    <p className="text-2xl font-bold text-violet-400 mt-1">${farmProfile.monthlyRevenue.toLocaleString()}</p>
+                    <p className="text-sm text-gray-400">estimated</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         );
-      
-      case 'assessment':
+
+      case 'projects':
         return (
-          <div className="space-y-4 sm:space-y-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-emerald-400">Farm Assessment</h2>
-            <div className="bg-black/30 rounded-xl p-4 sm:p-6 backdrop-blur-sm border border-emerald-900/50">
-              <div className="text-center py-6 sm:py-12">
-                <Sprout className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-emerald-400 mb-3 sm:mb-4" />
-                <h3 className="text-lg sm:text-xl font-medium mb-2">Assessment In Progress</h3>
-                <p className="text-gray-300 text-sm sm:text-base max-w-md mx-auto mb-4 sm:mb-6 px-2">
-                  Our experts are currently analyzing your farm&apos;s regenerative potential. This process typically takes 5-7 business days.
-                </p>
-                <div className="w-full max-w-md mx-auto bg-gray-700 rounded-full h-3 sm:h-4 px-2 sm:px-0">
-                  <div className="bg-emerald-500 h-3 sm:h-4 rounded-full w-1/2"></div>
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-white">Projects</h2>
+              <Link
+                href="/farmer-dashboard/new-project"
+                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+              >
+                <Plus className="w-4 h-4" />
+                New Project
+              </Link>
+            </div>
+
+            <div className="grid gap-6">
+              {projects.map(project => (
+                <div key={project.id} className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50 hover:border-emerald-700/50 transition-all">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h3 className="text-xl font-bold text-white mb-1">{project.title}</h3>
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                        project.status === 'active' 
+                          ? 'bg-emerald-900/40 text-emerald-300 border border-emerald-700/50' 
+                          : 'bg-amber-900/30 text-amber-300 border border-amber-700/50'
+                      }`}>
+                        {project.status === 'active' ? (
+                          <>
+                            <CheckCircle className="w-4 h-4 mr-1" />
+                            Active
+                          </>
+                        ) : (
+                          <>
+                            <Clock className="w-4 h-4 mr-1" />
+                            Pending
+                          </>
+                        )}
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-2xl font-bold text-emerald-400">{project.progress}%</p>
+                      <p className="text-sm text-gray-400">Complete</p>
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <div className="w-full bg-gray-800 rounded-full h-3">
+                      <div 
+                        className="bg-gradient-to-r from-emerald-500 to-green-500 h-3 rounded-full transition-all duration-500"
+                        style={{ width: `${project.progress}%` }}
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <p className="text-gray-400 text-sm">Next Milestone</p>
+                      <p className="text-white font-medium">{project.nextMilestone}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-400 text-sm">Time Remaining</p>
+                      <p className="text-amber-300 font-medium">{project.daysLeft} days</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <Link 
+                      href={`/farmer-dashboard/project/${project.id}`}
+                      className="flex-1 px-4 py-2 bg-emerald-900/40 hover:bg-emerald-800/50 border border-emerald-700/50 rounded-lg text-sm font-medium text-center transition-all"
+                    >
+                      View Details
+                    </Link>
+                    <Link
+                      href={`/farmer-dashboard/update/${project.id}`}
+                      className="flex-1 px-4 py-2 bg-gray-800/70 hover:bg-gray-700/80 border border-gray-700 rounded-lg text-sm font-medium text-center transition-all"
+                    >
+                      Submit Update
+                    </Link>
+                  </div>
                 </div>
-                <p className="mt-2 text-xs sm:text-sm text-gray-400">
-                  50% complete
-                </p>
+              ))}
+            </div>
+
+            {/* Create New Project CTA */}
+            <div className="bg-gradient-to-r from-emerald-900/30 to-green-900/30 rounded-xl p-6 border border-emerald-700/50">
+              <div className="text-center">
+                <Sprout className="w-12 h-12 mx-auto text-emerald-400 mb-3" />
+                <h3 className="text-xl font-bold text-white mb-2">Start Your Next Project</h3>
+                <p className="text-gray-300 mb-4">Ready to expand your regenerative impact? Create a new project and connect with investors.</p>
+                <Link
+                  href="/farmer-dashboard/new-project"
+                  className="inline-flex items-center px-6 py-3 bg-emerald-600 hover:bg-emerald-700 rounded-lg font-medium transition-colors"
+                >
+                  <Plus className="w-5 h-5 mr-2" />
+                  Create New Project
+                </Link>
               </div>
             </div>
           </div>
         );
-      
+
       case 'tokenization':
         return (
-          <div className="space-y-4 sm:space-y-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-emerald-400">Farm Tokenization</h2>
-            <div className="bg-black/30 rounded-xl p-4 sm:p-6 backdrop-blur-sm border border-emerald-900/50">
-              <div className="text-center py-6 sm:py-8">
-                <Scan className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-emerald-400 mb-3 sm:mb-4" />
-                <h3 className="text-lg sm:text-xl font-medium mb-3 sm:mb-4">Ready for Tokenization</h3>
-                <p className="text-gray-300 text-sm sm:text-base max-w-md mx-auto mb-6 sm:mb-8 px-2">
-                  Your farm has been assessed and is eligible for tokenization. Begin the process to unlock funding opportunities.
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-white">Farm Tokenization</h2>
+              <span className="px-3 py-1 bg-emerald-900/40 text-emerald-300 rounded-full text-sm">
+                Eligible
+              </span>
+            </div>
+
+            <div className="bg-gradient-to-r from-emerald-900/30 to-green-900/30 rounded-xl p-6 border border-emerald-700/50">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Scan className="w-8 h-8 text-emerald-400" />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">Ready for Tokenization</h3>
+                <p className="text-gray-300 mb-6 max-w-md mx-auto">
+                  Your farm has been assessed and meets all requirements for tokenization. Start the process to unlock funding opportunities.
                 </p>
-                <button className="px-4 py-2 sm:px-6 sm:py-3 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 transition-colors rounded-lg text-sm sm:text-base font-medium">
-                  Start Tokenization Process
+                <button className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 rounded-lg font-medium transition-colors">
+                  Begin Tokenization Process
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <CheckCircle className="w-6 h-6 text-blue-400" />
+                  </div>
+                  <h3 className="font-bold text-white mb-2">Assessment Complete</h3>
+                  <p className="text-sm text-gray-400">Farm evaluation passed with high scores</p>
+                </div>
+              </div>
+
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Scan className="w-6 h-6 text-emerald-400" />
+                  </div>
+                  <h3 className="font-bold text-white mb-2">Documentation Ready</h3>
+                  <p className="text-sm text-gray-400">All required documents verified</p>
+                </div>
+              </div>
+
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-violet-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Star className="w-6 h-6 text-violet-400" />
+                  </div>
+                  <h3 className="font-bold text-white mb-2">High Impact Score</h3>
+                  <p className="text-sm text-gray-400">Excellent regenerative potential</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'funding':
+        return (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-white">Funding Management</h2>
+              <button className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-sm font-medium transition-colors">
+                Apply for Funding
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <DollarSign className="w-6 h-6 text-emerald-400" />
+                  </div>
+                  <h3 className="font-bold text-white mb-2">Total Funding</h3>
+                  <p className="text-2xl font-bold text-emerald-400">$145,000</p>
+                  <p className="text-sm text-gray-400 mt-1">+$25,000 this month</p>
+                </div>
+              </div>
+
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-amber-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Clock className="w-6 h-6 text-amber-400" />
+                  </div>
+                  <h3 className="font-bold text-white mb-2">Pending Milestones</h3>
+                  <p className="text-2xl font-bold text-amber-400">$32,500</p>
+                  <p className="text-sm text-gray-400 mt-1">2 milestones due</p>
+                </div>
+              </div>
+
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <TrendingUp className="w-6 h-6 text-blue-400" />
+                  </div>
+                  <h3 className="font-bold text-white mb-2">ROI Performance</h3>
+                  <p className="text-2xl font-bold text-blue-400">12.5%</p>
+                  <p className="text-sm text-gray-400 mt-1">Above target</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+              <h3 className="text-lg font-bold text-white mb-4">Funding Opportunities</h3>
+              <div className="bg-gradient-to-r from-emerald-900/30 to-green-900/30 rounded-lg p-4 border border-emerald-700/50 text-center">
+                <CreditCard className="w-12 h-12 mx-auto text-emerald-400 mb-3" />
+                <h4 className="font-bold text-white mb-2">Ready to Apply</h4>
+                <p className="text-gray-300 mb-4">Complete tokenization to unlock funding opportunities from our investor network.</p>
+                <button 
+                  onClick={() => setActiveTab('tokenization')}
+                  className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 rounded-lg font-medium transition-colors"
+                >
+                  Complete Tokenization First
                 </button>
               </div>
             </div>
           </div>
         );
 
-      case 'loans':
+      case 'monitoring':
         return (
-          <div className="space-y-4 sm:space-y-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-emerald-400">Loan Applications</h2>
-            <div className="bg-black/30 rounded-xl p-4 sm:p-6 backdrop-blur-sm border border-emerald-900/50">
-              <div className="text-center py-6 sm:py-8">
-                <CreditCard className="w-12 h-12 sm:w-16 sm:h-16 mx-auto text-emerald-400 mb-3 sm:mb-4" />
-                <h3 className="text-lg sm:text-xl font-medium mb-3 sm:mb-4">No Active Loan Applications</h3>
-                <p className="text-gray-300 text-sm sm:text-base max-w-md mx-auto mb-6 sm:mb-8 px-2">
-                  You currently have no active loan applications. Complete the tokenization process to access funding opportunities.
-                </p>
-                <button disabled className="px-4 py-2 sm:px-6 sm:py-3 bg-gray-600 cursor-not-allowed opacity-70 rounded-lg text-sm sm:text-base font-medium">
-                  Apply for Funding (Complete Tokenization First)
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-white">Progress Monitoring</h2>
+              <select className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm">
+                <option>Last 30 days</option>
+                <option>Last 90 days</option>
+                <option>Last year</option>
+              </select>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+                <h3 className="text-lg font-bold text-white mb-4">Carbon Sequestration</h3>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">Current Month</span>
+                    <span className="text-emerald-400 font-bold">3.2 tons CO₂</span>
+                  </div>
+                  <div className="w-full bg-gray-800 rounded-full h-2">
+                    <div className="bg-emerald-500 h-2 rounded-full" style={{ width: '65%' }}></div>
+                  </div>
+                  <p className="text-sm text-gray-400">65% of monthly target achieved</p>
+                </div>
+              </div>
+
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+                <h3 className="text-lg font-bold text-white mb-4">Soil Health Score</h3>
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-green-400 mb-2">8.2</div>
+                  <p className="text-sm text-gray-400">out of 10</p>
+                  <div className="mt-4 flex justify-center space-x-1">
+                    {[...Array(8)].map((_, i) => (
+                      <div key={i} className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    ))}
+                    {[...Array(2)].map((_, i) => (
+                      <div key={i} className="w-2 h-2 bg-gray-600 rounded-full"></div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'marketplace':
+        return (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-white">Carbon Credit Marketplace</h2>
+              <div className="flex gap-3">
+                <button className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-sm font-medium transition-colors">
+                  List Credits
                 </button>
+                <button className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors">
+                  View Market
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+                <h3 className="text-lg font-bold text-white mb-4">Your Carbon Credits</h3>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">Available Credits</span>
+                    <span className="text-emerald-400 font-bold">{farmProfile.carbonCredits} tons</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">Market Value</span>
+                    <span className="text-white font-bold">$3,440</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">Current Rate</span>
+                    <span className="text-green-400 font-bold">$80/ton</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+                <h3 className="text-lg font-bold text-white mb-4">Market Trends</h3>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">7-day change</span>
+                    <span className="text-emerald-400 font-bold">+5.2%</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">30-day high</span>
+                    <span className="text-white font-bold">$85/ton</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">30-day low</span>
+                    <span className="text-white font-bold">$75/ton</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'rewards':
+        return (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-white">Achievements & Rewards</h2>
+              <div className="text-right">
+                <p className="text-sm text-gray-400">Total Points</p>
+                <p className="text-2xl font-bold text-emerald-400">2,450</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-gradient-to-br from-emerald-900/30 to-green-900/30 rounded-xl p-6 border border-emerald-700/50">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-emerald-900/40 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Award className="w-8 h-8 text-emerald-400" />
+                  </div>
+                  <h3 className="font-bold text-white mb-2">Regeneration Pioneer</h3>
+                  <p className="text-sm text-gray-300">First successful carbon credit generation</p>
+                  <span className="inline-block mt-3 px-3 py-1 bg-emerald-900/40 text-emerald-300 rounded-full text-xs">
+                    Earned
+                  </span>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-blue-900/30 to-violet-900/30 rounded-xl p-6 border border-blue-700/50">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-blue-900/40 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Star className="w-8 h-8 text-blue-400" />
+                  </div>
+                  <h3 className="font-bold text-white mb-2">Project Master</h3>
+                  <p className="text-sm text-gray-300">Complete 3 successful projects</p>
+                  <span className="inline-block mt-3 px-3 py-1 bg-blue-900/40 text-blue-300 rounded-full text-xs">
+                    Earned
+                  </span>
+                </div>
+              </div>
+
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700 opacity-60">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Zap className="w-8 h-8 text-gray-500" />
+                  </div>
+                  <h3 className="font-bold text-gray-400 mb-2">Carbon Champion</h3>
+                  <p className="text-sm text-gray-500">Generate 100 tons of carbon credits</p>
+                  <span className="inline-block mt-3 px-3 py-1 bg-gray-700 text-gray-400 rounded-full text-xs">
+                    In Progress (43/100)
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -258,13 +838,11 @@ export default function FarmerDashboard() {
 
       default:
         return (
-          <div className="bg-black/30 rounded-xl p-4 sm:p-6 backdrop-blur-sm border border-emerald-900/50">
-            <div className="text-center py-6 sm:py-8">
-              <h3 className="text-lg sm:text-xl font-medium mb-3 sm:mb-4">Feature Coming Soon</h3>
-              <p className="text-gray-300 text-sm sm:text-base max-w-md mx-auto px-2">
-                This feature is currently in development and will be available soon. Check back later for updates!
-              </p>
-            </div>
+          <div className="bg-black/30 rounded-xl p-8 backdrop-blur-sm border border-emerald-900/50 text-center">
+            <h3 className="text-xl font-medium text-white mb-4">Feature Coming Soon</h3>
+            <p className="text-gray-400 max-w-md mx-auto">
+              This feature is currently in development and will be available soon. Check back later for updates!
+            </p>
           </div>
         );
     }
@@ -379,213 +957,6 @@ export default function FarmerDashboard() {
           </div>
         </div>
       </div>
-      
-      {/* Main Dashboard Content */}
-      <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Projects */}
-          <div className="lg:col-span-2">
-            <div className="bg-black/30 rounded-xl p-5 sm:p-6 backdrop-blur-sm border border-emerald-900/50">
-              <div className="flex justify-between items-center mb-5">
-                <h2 className="text-lg font-bold">My Projects</h2>
-                <Link href="/farmer-dashboard#all-projects" className="text-emerald-400 text-sm flex items-center gap-1 hover:text-emerald-300 transition-colors">
-                  View all
-                  <ArrowUpRight size={14} />
-                </Link>
-              </div>
-              
-              <div className="space-y-4">
-                {projects.map(project => (
-                  <div key={project.id} className="bg-gray-900/50 rounded-lg p-4 sm:p-5 border border-gray-800/80">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
-                      <h3 className="font-medium">{project.title}</h3>
-                      <span className={`text-xs px-2.5 py-1 rounded-full flex items-center w-fit
-                        ${project.status === 'active' 
-                          ? 'bg-emerald-900/40 text-emerald-300 border border-emerald-900/70' 
-                          : 'bg-amber-900/30 text-amber-300 border border-amber-900/50'
-                        }`}
-                      >
-                        {project.status === 'active' ? (
-                          <>
-                            <CheckCircle size={12} className="mr-1" />
-                            Active
-                          </>
-                        ) : (
-                          <>
-                            <Clock size={12} className="mr-1" />
-                            Pending
-                          </>
-                        )}
-                      </span>
-                    </div>
-                    
-                    {/* Progress Bar */}
-                    <div className="mt-4">
-                      <div className="flex justify-between text-sm mb-1.5">
-                        <span className="text-gray-400">Progress</span>
-                        <span className="text-emerald-300">{project.progress}%</span>
-                      </div>
-                      <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-emerald-500 rounded-full"
-                          style={{ width: `${project.progress}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                    
-                    {/* Project Details */}
-                    <div className="mt-4 pt-4 border-t border-gray-800/80 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                      <div>
-                        <span className="text-gray-400 block">Next milestone:</span>
-                        <span>{project.nextMilestone}</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-400 block">Due in:</span>
-                        <span className="text-amber-300">{project.daysLeft} days</span>
-                      </div>
-                    </div>
-                    
-                    {/* Action Buttons */}
-                    <div className="mt-4 flex flex-col xs:flex-row gap-3">
-                      <Link 
-                        href={`/farmer-dashboard/project/${project.id}`}
-                        className="px-3.5 py-2 bg-emerald-900/40 hover:bg-emerald-800/50 border border-emerald-900/60 rounded-lg text-sm flex items-center justify-center flex-1 transition-all"
-                      >
-                        View Details
-                      </Link>
-                      <Link
-                        href={`/farmer-dashboard/update/${project.id}`}
-                        className="px-3.5 py-2 bg-gray-800/70 hover:bg-gray-700/80 border border-gray-800 rounded-lg text-sm flex items-center justify-center flex-1 transition-all"
-                      >
-                        Submit Update
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              
-              {/* Quick Add Project */}
-              <div className="mt-6 bg-emerald-900/20 rounded-lg p-5 border border-emerald-900/40 flex flex-col xs:flex-row gap-4 items-center justify-between">
-                <div>
-                  <h3 className="font-medium text-emerald-300">Ready to start a new project?</h3>
-                  <p className="text-sm text-gray-300 mt-1">Create a new regenerative agriculture project and find investors.</p>
-                </div>
-                <Link
-                  href="/farmer-dashboard/new-project"
-                  className="whitespace-nowrap px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-sm flex items-center justify-center gap-2 font-medium transition-all w-full xs:w-auto"
-                >
-                  <Plus size={16} />
-                  Create Project
-                </Link>
-              </div>
-            </div>
-            
-            {/* Financial Overview */}
-            <div className="bg-black/30 rounded-xl p-5 sm:p-6 backdrop-blur-sm border border-emerald-900/50 mt-6">
-              <h2 className="text-lg font-bold mb-5">Financial Overview</h2>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800/80">
-                  <h4 className="text-gray-400 text-sm">Total Funding</h4>
-                  <p className="text-xl font-bold mt-2">$145,000</p>
-                  <p className="text-emerald-400 text-sm mt-1">+$25,000 this month</p>
-                </div>
-                
-                <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800/80">
-                  <h4 className="text-gray-400 text-sm">Pending Milestones</h4>
-                  <p className="text-xl font-bold mt-2">$32,500</p>
-                  <p className="text-amber-400 text-sm mt-1">2 milestones</p>
-                </div>
-                
-                <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800/80">
-                  <h4 className="text-gray-400 text-sm">Carbon Credits</h4>
-                  <p className="text-xl font-bold mt-2">43 tons</p>
-                  <p className="text-emerald-400 text-sm mt-1">Est. value: $3,440</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Right Column - Notifications & Resources */}
-          <div className="space-y-6">
-            {/* Notifications */}
-            <div className="bg-black/30 rounded-xl p-5 sm:p-6 backdrop-blur-sm border border-emerald-900/50">
-              <div className="flex justify-between items-center mb-5">
-                <h2 className="text-lg font-bold">Notifications</h2>
-                <Link href="/farmer-dashboard#all-notifications" className="text-emerald-400 text-sm hover:text-emerald-300 transition-colors">
-                  View all
-                </Link>
-              </div>
-              
-              <div className="space-y-3">
-                {notifications.map(notification => (
-                  <div 
-                    key={notification.id}
-                    className="px-3 py-2.5 bg-gray-900/50 rounded-lg border border-gray-800/80 flex gap-3 items-center"
-                  >
-                    {notification.type === 'message' ? (
-                      <div className="bg-blue-900/30 p-2 rounded-lg">
-                        <MessageSquare size={16} className="text-blue-400" />
-                      </div>
-                    ) : notification.type === 'document' ? (
-                      <div className="bg-amber-900/30 p-2 rounded-lg">
-                        <FileText size={16} className="text-amber-400" />
-                      </div>
-                    ) : (
-                      <div className="bg-emerald-900/30 p-2 rounded-lg">
-                        <CheckCircle size={16} className="text-emerald-400" />
-                      </div>
-                    )}
-                    
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm truncate">{notification.content}</p>
-                      <p className="text-xs text-gray-500 mt-0.5">{notification.time}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            {/* Resources */}
-            <div className="bg-black/30 rounded-xl p-5 sm:p-6 backdrop-blur-sm border border-emerald-900/50">
-              <h2 className="text-lg font-bold mb-5">Resources</h2>
-              
-              <div className="space-y-3">
-                <Link
-                  href="/guide/carbon-credits"
-                  className="block px-4 py-3 bg-gray-900/50 hover:bg-gray-900/70 rounded-lg border border-gray-800/80 transition-all"
-                >
-                  <h4 className="font-medium">Carbon Credit Guide</h4>
-                  <p className="text-sm text-gray-400 mt-1">Learn how to maximize your carbon credit potential</p>
-                </Link>
-                
-                <Link
-                  href="/guide/soil-health"
-                  className="block px-4 py-3 bg-gray-900/50 hover:bg-gray-900/70 rounded-lg border border-gray-800/80 transition-all"
-                >
-                  <h4 className="font-medium">Soil Health Practices</h4>
-                  <p className="text-sm text-gray-400 mt-1">Best practices for regenerative agriculture</p>
-                </Link>
-                
-                <Link
-                  href="/guide/investor-pitching"
-                  className="block px-4 py-3 bg-gray-900/50 hover:bg-gray-900/70 rounded-lg border border-gray-800/80 transition-all"
-                >
-                  <h4 className="font-medium">Investor Pitching</h4>
-                  <p className="text-sm text-gray-400 mt-1">How to create compelling project proposals</p>
-                </Link>
-              </div>
-              
-              <Link
-                href="/farmer-resources"
-                className="mt-4 block text-center px-4 py-2.5 bg-gray-800 hover:bg-gray-700 rounded-lg text-sm font-medium transition-all"
-              >
-                View All Resources
-              </Link>
-            </div>
-          </div>
-        </div>
-      </main>
     </div>
   );
 }
