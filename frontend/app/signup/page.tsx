@@ -1,15 +1,34 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Sprout } from 'lucide-react';
 import AuthForm from '@/components/auth/AuthForm';
 import { useSearchParams } from 'next/navigation';
 
-export default function SignupPage() {
+function SignupContent() {
   const searchParams = useSearchParams();
   const userType = searchParams.get('type'); // Get 'type' from URL query params
   
+  return (
+    <>
+      <h1 className="text-3xl sm:text-4xl font-bold mb-8 text-center">
+        <span className="text-emerald-400">Join</span> Our Community
+      </h1>
+      
+      <AuthForm type="signup" defaultUserType={userType} />
+      
+      <div className="mt-8 max-w-md text-center text-sm text-gray-400">
+        By creating an account, you agree to our 
+        <Link href="/terms" className="text-emerald-400 hover:text-emerald-300 mx-1">Terms of Service</Link> 
+        and 
+        <Link href="/privacy" className="text-emerald-400 hover:text-emerald-300 mx-1">Privacy Policy</Link>.
+      </div>
+    </>
+  );
+}
+
+export default function SignupPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-900 via-black to-emerald-900 flex flex-col">
       {/* Header */}
@@ -33,18 +52,16 @@ export default function SignupPage() {
       
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-8">
-        <h1 className="text-3xl sm:text-4xl font-bold mb-8 text-center">
-          <span className="text-emerald-400">Join</span> Our Community
-        </h1>
-        
-        <AuthForm type="signup" defaultUserType={userType} />
-        
-        <div className="mt-8 max-w-md text-center text-sm text-gray-400">
-          By creating an account, you agree to our 
-          <Link href="/terms" className="text-emerald-400 hover:text-emerald-300 mx-1">Terms of Service</Link> 
-          and 
-          <Link href="/privacy" className="text-emerald-400 hover:text-emerald-300 mx-1">Privacy Policy</Link>.
-        </div>
+        <Suspense fallback={
+          <div className="text-center">
+            <h1 className="text-3xl sm:text-4xl font-bold mb-8">
+              <span className="text-emerald-400">Join</span> Our Community
+            </h1>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400 mx-auto"></div>
+          </div>
+        }>
+          <SignupContent />
+        </Suspense>
       </main>
     </div>
   );

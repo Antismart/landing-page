@@ -1,22 +1,38 @@
 'use client'
 
-import React, { useState } from 'react';
-import { ChevronRight, Coins, Sprout, Users, TreePine, Sun, Menu, X, Star, Shield, Award, TrendingUp, MapPin, Leaf, Globe } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ChevronRight, Coins, Sprout, Users, TreePine, Menu, X, Star, Shield, Award, TrendingUp, MapPin, Leaf, Globe } from 'lucide-react';
 import Footer from './Footer';
 import Link from 'next/link';
-// Removed Image import
+import Image from 'next/image';
 
 const LandingPage = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const titleWords = "Nurturing the Future of Regenerative Agriculture".split(" ");
-  const coloredTitle = titleWords.map((word, index) => (
-    <span 
-      key={index} 
-      className={index % 3 === 0 ? "text-emerald-400" : "text-white"}
-    >
-      {word}{" "}
-    </span>
-  ));
+  const [isClient, setIsClient] = useState(false);
+  const [heroParticles, setHeroParticles] = useState<Array<{left: string, top: string, delay: string, duration: string}>>([]);
+  const [processStepParticles, setProcessStepParticles] = useState<Array<{left: string, top: string, delay: string, duration: string}>>([]);
+
+  useEffect(() => {
+    setIsClient(true);
+
+    // Generate hero section particles
+    const newHeroParticles = Array.from({ length: 25 }, () => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 5}s`,
+      duration: `${2 + Math.random() * 3}s`
+    }));
+    setHeroParticles(newHeroParticles);
+
+    // Generate particles for process steps hover effect
+    const newProcessStepParticles = Array.from({ length: 6 }, (_, i) => ({
+      left: `${20 + Math.random() * 60}%`,
+      top: `${20 + Math.random() * 60}%`,
+      delay: `${i * 0.3}s`,
+      duration: `${2 + Math.random() * 2}s`
+    }));
+    setProcessStepParticles(newProcessStepParticles);
+  }, []);
 
   // How It Works Process Steps
   const processSteps = [
@@ -212,15 +228,15 @@ const LandingPage = () => {
         ))}
         
         {/* Floating Particles with Enhanced Glow */}
-        {[...Array(25)].map((_, i) => (
+        {isClient && heroParticles.map((particle, i) => (
           <div
             key={`particle-${i}`}
             className="absolute w-1.5 h-1.5 bg-emerald-400/40 rounded-full animate-pulse shadow-lg shadow-emerald-400/30"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${2 + Math.random() * 3}s`
+              left: particle.left,
+              top: particle.top,
+              animationDelay: particle.delay,
+              animationDuration: particle.duration
             }}
           />
         ))}
@@ -341,7 +357,7 @@ const LandingPage = () => {
             
             <div className="relative z-10">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-6">
-                {titleWords.map((word, index) => (
+                {"Nurturing the Future of Regenerative Agriculture".split(" ").map((word, index) => (
                   <span 
                     key={index} 
                     className={`inline-block mr-2 sm:mr-3 ${
@@ -621,7 +637,7 @@ const LandingPage = () => {
                       {/* Testimonial Content */}
                       <div className="mb-8">
                         <p className="text-gray-200 text-base leading-relaxed italic font-light group-hover:text-white transition-colors duration-300">
-                          "{testimonial.content}"
+                          &ldquo;{testimonial.content}&rdquo;
                         </p>
                       </div>
                       
@@ -677,15 +693,15 @@ const LandingPage = () => {
                   
                   {/* Floating Particles Effect on Hover */}
                   <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    {[...Array(6)].map((_, i) => (
+                    {isClient && processStepParticles.map((particle, i) => (
                       <div
                         key={i}
                         className="absolute w-1 h-1 bg-emerald-400/60 rounded-full animate-pulse"
                         style={{
-                          left: `${20 + Math.random() * 60}%`,
-                          top: `${20 + Math.random() * 60}%`,
-                          animationDelay: `${i * 0.3}s`,
-                          animationDuration: `${2 + Math.random() * 2}s`
+                          left: particle.left,
+                          top: particle.top,
+                          animationDelay: particle.delay,
+                          animationDuration: particle.duration
                         }}
                       />
                     ))}
@@ -930,9 +946,11 @@ const LandingPage = () => {
                       >
                         <div className="bg-white/8 backdrop-blur-sm rounded-xl p-4 border border-emerald-800/30 hover:border-emerald-500/60 transition-all duration-300 transform hover:scale-110 hover:shadow-xl hover:shadow-emerald-500/25 w-28 h-18 flex items-center justify-center overflow-hidden hover:rotate-2 group-hover:bg-white/12">
                           {partner.logo.startsWith('http') || partner.logo.startsWith('/images') ? (
-                            <img 
+                            <Image 
                               src={partner.logo} 
                               alt={partner.name}
+                              width={112}
+                              height={72}
                               className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-60 group-hover:opacity-90 transition-all duration-500 group-hover:scale-105 group-hover:rotate-3"
                               onError={(e) => {
                                 // Fallback to text if image fails to load
@@ -974,9 +992,11 @@ const LandingPage = () => {
                       >
                         <div className="bg-white/8 backdrop-blur-sm rounded-xl p-4 border border-emerald-800/30 hover:border-emerald-500/60 transition-all duration-300 transform hover:scale-110 hover:shadow-xl hover:shadow-emerald-500/25 w-28 h-18 flex items-center justify-center overflow-hidden hover:rotate-2 group-hover:bg-white/12">
                           {partner.logo.startsWith('http') || partner.logo.startsWith('/images') ? (
-                            <img 
+                            <Image 
                               src={partner.logo} 
                               alt={partner.name}
+                              width={112}
+                              height={72}
                               className="max-w-full max-h-full object-contain filter brightness-0 invert opacity-60 group-hover:opacity-90 transition-all duration-500 group-hover:scale-105 group-hover:rotate-3"
                               onError={(e) => {
                                 // Fallback to text if image fails to load
