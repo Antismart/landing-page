@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120" height="60" viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="120" height="60" rx="8" fill="#1F2937"/>
+  <path d="M20 25L30 15L40 25L30 35L20 25Z" fill="#10B981"/>
+  <path d="M25 30L35 20L45 30L35 40L25 30Z" fill="#10B981" fill-opacity="0.6"/>
+  <text x="55" y="25" fill="#10B981" font-family="Arial, sans-serif" font-size="8" font-weight="bold">BLOCKCHAIN</text>
+  <text x="55" y="35" fill="#10B981" font-family="Arial, sans-serif" font-size="8" font-weight="bold">COUNCIL</text>
+</svg>
