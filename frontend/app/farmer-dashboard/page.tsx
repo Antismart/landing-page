@@ -7,8 +7,22 @@ import {
   ArrowLeft, Tractor, Sprout, LineChart, Scan, CreditCard, 
   Leaf, Loader2, LogOut, Menu, X, CheckCircle, 
   Clock, FileText, MessageSquare, Plus, TrendingUp, DollarSign, 
-  Award, BarChart3, Zap, Star, Bell
+  Award, BarChart3, Zap, Star, Bell, Settings, Wifi, WifiOff, 
+  Activity, Battery, Signal, Thermometer, Droplets, Wind
 } from 'lucide-react';
+
+interface Product {
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+  unit: string;
+  stock: number;
+  status: 'active' | 'sold_out';
+  description: string;
+  listedDate: string;
+  image: string;
+}
 
 export default function FarmerDashboard() {
   const router = useRouter();
@@ -16,6 +30,98 @@ export default function FarmerDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userName, setUserName] = useState('');
+  const [deviceConfigOpen, setDeviceConfigOpen] = useState(false);
+  const [selectedDevice, setSelectedDevice] = useState(null);
+  
+  // Marketplace states
+  const [listProductOpen, setListProductOpen] = useState(false);
+  const [analyticsOpen, setAnalyticsOpen] = useState(false);
+  const [editProductOpen, setEditProductOpen] = useState(false);
+  const [viewProductOpen, setViewProductOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  
+  const [devices, setDevices] = useState([
+    {
+      id: 1,
+      name: 'Soil Sensor #1',
+      type: 'soil',
+      status: 'online',
+      battery: 85,
+      lastUpdate: '2 min ago',
+      location: 'Field A - North',
+      readings: { moisture: 72, ph: 6.8, temperature: 24 }
+    },
+    {
+      id: 2,
+      name: 'Weather Station',
+      type: 'weather',
+      status: 'online',
+      battery: 92,
+      lastUpdate: '1 min ago',
+      location: 'Central Location',
+      readings: { humidity: 68, rainfall: 2.4, wind: 12 }
+    },
+    {
+      id: 3,
+      name: 'Crop Monitor #2',
+      type: 'crop',
+      status: 'online',
+      battery: 78,
+      lastUpdate: '3 min ago',
+      location: 'Field B - South',
+      readings: { growth: 2.1, ndvi: 0.82, health: 'Excellent' }
+    },
+    {
+      id: 4,
+      name: 'Irrigation Controller',
+      type: 'irrigation',
+      status: 'standby',
+      battery: 65,
+      lastUpdate: '5 min ago',
+      location: 'Irrigation Hub',
+      readings: { waterUsage: 245, efficiency: 94, status: 'Standby' }
+    }
+  ]);
+  
+  // Sample product data
+  const [products, setProducts] = useState<Product[]>([
+    {
+      id: 1,
+      name: 'Organic Kale',
+      category: 'Vegetables',
+      price: 3.50,
+      unit: 'bunch',
+      stock: 24,
+      status: 'active',
+      description: 'Fresh, organically grown kale bunches. Ready for harvest.',
+      listedDate: '2 days ago',
+      image: 'kale'
+    },
+    {
+      id: 2,
+      name: 'Heritage Tomatoes',
+      category: 'Vegetables',
+      price: 5.00,
+      unit: 'lb',
+      stock: 180,
+      status: 'active',
+      description: 'Heirloom variety tomatoes, vine-ripened and chemical-free.',
+      listedDate: '5 days ago',
+      image: 'tomatoes'
+    },
+    {
+      id: 3,
+      name: 'Organic Maize',
+      category: 'Grains',
+      price: 2.20,
+      unit: 'kg',
+      stock: 0,
+      status: 'sold_out',
+      description: 'Non-GMO yellow maize, perfect for local communities.',
+      listedDate: '1 week ago',
+      image: 'maize'
+    }
+  ]);
   
   // Set isClient to true when component mounts on client-side
   useEffect(() => {
@@ -135,7 +241,146 @@ export default function FarmerDashboard() {
       }
     }
   };
-  
+
+  // Device configuration handlers
+  const handleDeviceConfig = (device: any) => {
+    setSelectedDevice(device);
+    // In a real app, this would open device-specific configuration
+    alert(`Configuring ${device.name}...`);
+  };
+
+  const handleDeviceCalibrate = (device: any) => {
+    setDevices(prevDevices => 
+      prevDevices.map(d => 
+        d.id === device.id 
+          ? { ...d, lastUpdate: 'Calibrating...' }
+          : d
+      )
+    );
+    
+    // Simulate calibration process
+    setTimeout(() => {
+      setDevices(prevDevices => 
+        prevDevices.map(d => 
+          d.id === device.id 
+            ? { ...d, lastUpdate: 'Just now', status: 'online' }
+            : d
+        )
+      );
+      alert(`${device.name} calibrated successfully!`);
+    }, 2000);
+  };
+
+  const handleDeviceRestart = (device: any) => {
+    setDevices(prevDevices => 
+      prevDevices.map(d => 
+        d.id === device.id 
+          ? { ...d, status: 'restarting', lastUpdate: 'Restarting...' }
+          : d
+      )
+    );
+    
+    // Simulate restart process
+    setTimeout(() => {
+      setDevices(prevDevices => 
+        prevDevices.map(d => 
+          d.id === device.id 
+            ? { ...d, status: 'online', lastUpdate: 'Just now' }
+            : d
+        )
+      );
+      alert(`${device.name} restarted successfully!`);
+    }, 3000);
+  };
+
+  const handleAddDevice = () => {
+    alert('Add Device functionality would open here...');
+    setDeviceConfigOpen(false);
+  };
+
+  const handleRunDiagnostics = () => {
+    alert('Running diagnostics on all devices...');
+    setDevices(prevDevices => 
+      prevDevices.map(d => ({ ...d, lastUpdate: 'Diagnosing...' }))
+    );
+    
+    // Simulate diagnostics
+    setTimeout(() => {
+      setDevices(prevDevices => 
+        prevDevices.map(d => ({ ...d, lastUpdate: 'Just now' }))
+      );
+      alert('Diagnostics completed. All devices are functioning normally.');
+    }, 4000);
+  };
+
+  const handleExportData = () => {
+    const dataToExport = {
+      devices: devices,
+      exportDate: new Date().toISOString(),
+      farmProfile: farmProfile
+    };
+    
+    // In a real app, this would trigger a file download
+    console.log('Exporting data:', dataToExport);
+    alert('Device data exported successfully! Check your downloads folder.');
+  };
+
+  // Marketplace handlers
+  const handleListNewProduct = () => {
+    setListProductOpen(true);
+  };
+
+  const handleViewAnalytics = () => {
+    setAnalyticsOpen(true);
+  };
+
+  const handleEditProduct = (product: Product) => {
+    setSelectedProduct(product);
+    setEditProductOpen(true);
+  };
+
+  const handleViewProduct = (product: Product) => {
+    setSelectedProduct(product);
+    setViewProductOpen(true);
+  };
+
+  const handleRelistProduct = (product: Product) => {
+    setProducts(prevProducts => 
+      prevProducts.map(p => 
+        p.id === product.id 
+          ? { ...p, status: 'active' as const, stock: 50, listedDate: 'Just now' }
+          : p
+      )
+    );
+    alert(`${product.name} has been relisted successfully!`);
+  };
+
+  const handleCreateProduct = (productData: any) => {
+    const newProduct = {
+      id: products.length + 1,
+      ...productData,
+      status: 'active',
+      listedDate: 'Just now'
+    };
+    setProducts(prevProducts => [...prevProducts, newProduct]);
+    setListProductOpen(false);
+    alert('Product listed successfully!');
+  };
+
+  const handleUpdateProduct = (productData: any) => {
+    if (!selectedProduct) return;
+    
+    setProducts(prevProducts => 
+      prevProducts.map(p => 
+        p.id === selectedProduct.id 
+          ? { ...p, ...productData }
+          : p
+      )
+    );
+    setEditProductOpen(false);
+    alert('Product updated successfully!');
+  };
+
   // Dummy data for the dashboard
   const projects = [
     {
@@ -685,29 +930,196 @@ export default function FarmerDashboard() {
         return (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-white">Progress Monitoring</h2>
-              <select className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm">
-                <option>Last 30 days</option>
-                <option>Last 90 days</option>
-                <option>Last year</option>
-              </select>
+              <h2 className="text-2xl font-bold text-white">Farm Monitoring & AI Insights</h2>
+              <div className="flex gap-3">
+                <button 
+                  onClick={() => setDeviceConfigOpen(true)}
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-sm font-medium transition-colors"
+                >
+                  Configure Devices
+                </button>
+                <select className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm">
+                  <option>Last 24 hours</option>
+                  <option>Last 7 days</option>
+                  <option>Last 30 days</option>
+                </select>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* IoT Device Status */}
+            <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+              <h3 className="text-lg font-bold text-white mb-4">IoT Device Network</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800/50">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-gray-300 text-sm">Soil Sensor #1</span>
+                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-400">Moisture:</span>
+                      <span className="text-blue-400">72%</span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-400">pH Level:</span>
+                      <span className="text-green-400">6.8</span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-400">Temperature:</span>
+                      <span className="text-amber-400">24°C</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800/50">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-gray-300 text-sm">Weather Station</span>
+                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-400">Humidity:</span>
+                      <span className="text-blue-400">68%</span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-400">Rainfall:</span>
+                      <span className="text-emerald-400">2.4mm</span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-400">Wind:</span>
+                      <span className="text-gray-300">12 km/h</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800/50">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-gray-300 text-sm">Crop Monitor #2</span>
+                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-400">Growth Rate:</span>
+                      <span className="text-green-400">+2.1cm</span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-400">NDVI Index:</span>
+                      <span className="text-emerald-400">0.82</span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-400">Health:</span>
+                      <span className="text-green-400">Excellent</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800/50">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-gray-300 text-sm">Irrigation Ctrl</span>
+                    <div className="w-3 h-3 bg-amber-500 rounded-full animate-pulse"></div>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-400">Status:</span>
+                      <span className="text-amber-400">Standby</span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-400">Water Usage:</span>
+                      <span className="text-blue-400">245L</span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-400">Efficiency:</span>
+                      <span className="text-green-400">94%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* WeatherXM Integration */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
-                <h3 className="text-lg font-bold text-white mb-4">Carbon Sequestration</h3>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-bold text-white">WeatherXM Data</h3>
+                  <span className="px-2 py-1 bg-blue-900/40 text-blue-300 rounded-full text-xs">Live</span>
+                </div>
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-400">Current Month</span>
-                    <span className="text-emerald-400 font-bold">3.2 tons CO₂</span>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-blue-400">26°C</div>
+                      <div className="text-sm text-gray-400">Temperature</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-emerald-400">65%</div>
+                      <div className="text-sm text-gray-400">Humidity</div>
+                    </div>
                   </div>
-                  <div className="w-full bg-gray-800 rounded-full h-2">
-                    <div className="bg-emerald-500 h-2 rounded-full" style={{ width: '65%' }}></div>
+                  <div className="border-t border-gray-800 pt-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-gray-400">7-Day Forecast</span>
+                      <span className="text-green-400 text-sm">Optimal conditions</span>
+                    </div>
+                    <div className="bg-gray-900/50 rounded-lg p-3">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-300">Expected Rainfall:</span>
+                        <span className="text-blue-400">12-15mm</span>
+                      </div>
+                      <div className="flex justify-between text-sm mt-1">
+                        <span className="text-gray-300">Avg Temperature:</span>
+                        <span className="text-amber-400">24-28°C</span>
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-sm text-gray-400">65% of monthly target achieved</p>
                 </div>
               </div>
 
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+                <h3 className="text-lg font-bold text-white mb-4">AI-Powered Insights</h3>
+                <div className="space-y-4">
+                  <div className="bg-emerald-900/20 rounded-lg p-4 border border-emerald-700/30">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Zap className="w-4 h-4 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-emerald-300 mb-1">Irrigation Recommendation</h4>
+                        <p className="text-sm text-gray-300">Reduce irrigation by 15% this week. Soil moisture levels are optimal and rain is expected.</p>
+                        <p className="text-xs text-emerald-400 mt-1">Confidence: 92% • Potential water savings: 180L</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-blue-900/20 rounded-lg p-4 border border-blue-700/30">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <TrendingUp className="w-4 h-4 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-blue-300 mb-1">Yield Prediction</h4>
+                        <p className="text-sm text-gray-300">Current growth patterns suggest 18% higher yield than last season.</p>
+                        <p className="text-xs text-blue-400 mt-1">Confidence: 87% • Expected harvest: +2.1 tons</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-amber-900/20 rounded-lg p-4 border border-amber-700/30">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-amber-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Bell className="w-4 h-4 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-amber-300 mb-1">Pest Risk Alert</h4>
+                        <p className="text-sm text-gray-300">Low risk detected for aphids. Consider preventive organic treatment in 3-4 days.</p>
+                        <p className="text-xs text-amber-400 mt-1">Confidence: 76% • Action needed: Moderate</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Farm Health Metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
                 <h3 className="text-lg font-bold text-white mb-4">Soil Health Score</h3>
                 <div className="text-center">
@@ -721,6 +1133,96 @@ export default function FarmerDashboard() {
                       <div key={i} className="w-2 h-2 bg-gray-600 rounded-full"></div>
                     ))}
                   </div>
+                  <p className="text-xs text-green-400 mt-2">Improved by 0.3 this month</p>
+                </div>
+              </div>
+
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+                <h3 className="text-lg font-bold text-white mb-4">Carbon Sequestration</h3>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">This Month</span>
+                    <span className="text-emerald-400 font-bold">3.2 tons CO₂</span>
+                  </div>
+                  <div className="w-full bg-gray-800 rounded-full h-2">
+                    <div className="bg-emerald-500 h-2 rounded-full" style={{ width: '65%' }}></div>
+                  </div>
+                  <p className="text-sm text-gray-400">65% of monthly target (5 tons)</p>
+                  <div className="text-xs text-emerald-400">+0.8 tons vs last month</div>
+                </div>
+              </div>
+
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+                <h3 className="text-lg font-bold text-white mb-4">Resource Efficiency</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 text-sm">Water Usage</span>
+                    <span className="text-blue-400 font-medium">-12%</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 text-sm">Energy Efficiency</span>
+                    <span className="text-green-400 font-medium">+8%</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 text-sm">Fertilizer Reduction</span>
+                    <span className="text-emerald-400 font-medium">-15%</span>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-gray-800">
+                    <div className="text-center">
+                      <div className="text-xl font-bold text-emerald-400">A+</div>
+                      <div className="text-xs text-gray-400">Efficiency Grade</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Device Management */}
+            <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-white">Device Configuration & Training Data</h3>
+                <button className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors">
+                  View All Devices
+                </button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800/50">
+                  <h4 className="font-medium text-white mb-3">AI Training Status</h4>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-400 text-sm">Data Points Collected</span>
+                      <span className="text-emerald-400 font-medium">24,750</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-400 text-sm">Model Accuracy</span>
+                      <span className="text-green-400 font-medium">94.2%</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-400 text-sm">Last Training</span>
+                      <span className="text-blue-400 font-medium">2 hours ago</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800/50">
+                  <h4 className="font-medium text-white mb-3">Data Sources</h4>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-400 text-sm">IoT Sensors (4 active)</span>
+                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-400 text-sm">WeatherXM Station</span>
+                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-400 text-sm">Satellite Imagery</span>
+                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-400 text-sm">Manual Inputs</span>
+                      <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -733,11 +1235,11 @@ export default function FarmerDashboard() {
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-white">Farm Products Marketplace</h2>
               <div className="flex gap-3">
-                <button className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                <button className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-sm font-medium transition-colors flex items-center gap-2" onClick={handleListNewProduct}>
                   <Plus className="w-4 h-4" />
                   List New Product
                 </button>
-                <button className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors">
+                <button className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors" onClick={handleViewAnalytics}>
                   View Analytics
                 </button>
               </div>
@@ -794,101 +1296,46 @@ export default function FarmerDashboard() {
 
               <div className="space-y-4">
                 {/* Sample Product Listings */}
-                <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800/80 hover:border-emerald-700/50 transition-all">
-                  <div className="flex items-start justify-between">
-                    <div className="flex gap-4">
-                      <div className="w-16 h-16 bg-gradient-to-br from-green-600/30 to-emerald-600/30 rounded-lg flex items-center justify-center">
-                        <Sprout className="w-8 h-8 text-green-400" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h4 className="font-semibold text-white">Organic Kale</h4>
-                          <span className="px-2 py-1 bg-emerald-900/40 text-emerald-300 rounded-full text-xs">
-                            Active
-                          </span>
+                {products.map(product => (
+                  <div key={product.id} className="bg-gray-900/50 rounded-lg p-4 border border-gray-800/80 hover:border-emerald-700/50 transition-all">
+                    <div className="flex items-start justify-between">
+                      <div className="flex gap-4">
+                        <div className="w-16 h-16 bg-gradient-to-br from-green-600/30 to-emerald-600/30 rounded-lg flex items-center justify-center">
+                          <Sprout className="w-8 h-8 text-green-400" />
                         </div>
-                        <p className="text-gray-400 text-sm mb-2">Fresh, organically grown kale bunches. Ready for harvest.</p>
-                        <div className="flex items-center gap-4 text-sm">
-                          <span className="text-gray-400">Price: <span className="text-white font-medium">$3.50/bunch</span></span>
-                          <span className="text-gray-400">Stock: <span className="text-amber-400 font-medium">24 bunches</span></span>
-                          <span className="text-gray-400">Listed: 2 days ago</span>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h4 className="font-semibold text-white">{product.name}</h4>
+                            <span className={`px-2 py-1 bg-emerald-900/40 text-emerald-300 rounded-full text-xs ${
+                              product.status === 'active' ? 'bg-emerald-900/40 text-emerald-300' : 'bg-red-900/40 text-red-300'
+                            }`}>
+                              {product.status === 'active' ? 'Active' : 'Sold Out'}
+                            </span>
+                          </div>
+                          <p className="text-gray-400 text-sm mb-2">{product.description}</p>
+                          <div className="flex items-center gap-4 text-sm">
+                            <span className="text-gray-400">Price: <span className="text-white font-medium">${product.price}/{product.unit}</span></span>
+                            <span className="text-gray-400">Stock: <span className={`font-medium ${product.stock > 0 ? 'text-emerald-400' : 'text-red-400'}`}>{product.stock} {product.unit}</span></span>
+                            <span className="text-gray-400">Listed: {product.listedDate}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <button className="px-3 py-1.5 bg-emerald-900/40 hover:bg-emerald-800/50 text-emerald-300 rounded text-sm transition-colors">
-                        Edit
-                      </button>
-                      <button className="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded text-sm transition-colors">
-                        View
-                      </button>
+                      <div className="flex gap-2">
+                        <button className="px-3 py-1.5 bg-emerald-900/40 hover:bg-emerald-800/50 text-emerald-300 rounded text-sm transition-colors" onClick={() => handleEditProduct(product)}>
+                          Edit
+                        </button>
+                        <button className="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded text-sm transition-colors" onClick={() => handleViewProduct(product)}>
+                          View
+                        </button>
+                        {product.status === 'sold_out' && (
+                          <button className="px-3 py-1.5 bg-red-900/40 hover:bg-red-800/50 text-red-300 rounded text-sm transition-colors" onClick={() => handleRelistProduct(product)}>
+                            Relist
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-
-                <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800/80 hover:border-emerald-700/50 transition-all">
-                  <div className="flex items-start justify-between">
-                    <div className="flex gap-4">
-                      <div className="w-16 h-16 bg-gradient-to-br from-orange-600/30 to-red-600/30 rounded-lg flex items-center justify-center">
-                        <Sprout className="w-8 h-8 text-orange-400" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h4 className="font-semibold text-white">Heritage Tomatoes</h4>
-                          <span className="px-2 py-1 bg-emerald-900/40 text-emerald-300 rounded-full text-xs">
-                            Active
-                          </span>
-                        </div>
-                        <p className="text-gray-400 text-sm mb-2">Heirloom variety tomatoes, vine-ripened and chemical-free.</p>
-                        <div className="flex items-center gap-4 text-sm">
-                          <span className="text-gray-400">Price: <span className="text-white font-medium">$5.00/lb</span></span>
-                          <span className="text-gray-400">Stock: <span className="text-amber-400 font-medium">180 lbs</span></span>
-                          <span className="text-gray-400">Listed: 5 days ago</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <button className="px-3 py-1.5 bg-emerald-900/40 hover:bg-emerald-800/50 text-emerald-300 rounded text-sm transition-colors">
-                        Edit
-                      </button>
-                      <button className="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded text-sm transition-colors">
-                        View
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800/80 hover:border-emerald-700/50 transition-all">
-                  <div className="flex items-start justify-between">
-                    <div className="flex gap-4">
-                      <div className="w-16 h-16 bg-gradient-to-br from-yellow-600/30 to-amber-600/30 rounded-lg flex items-center justify-center">
-                        <Sprout className="w-8 h-8 text-yellow-400" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h4 className="font-semibold text-white">Organic Maize</h4>
-                          <span className="px-2 py-1 bg-red-900/40 text-red-300 rounded-full text-xs">
-                            Sold Out
-                          </span>
-                        </div>
-                        <p className="text-gray-400 text-sm mb-2">Non-GMO yellow maize, perfect for local communities.</p>
-                        <div className="flex items-center gap-4 text-sm">
-                          <span className="text-gray-400">Price: <span className="text-white font-medium">$2.20/kg</span></span>
-                          <span className="text-gray-400">Stock: <span className="text-red-400 font-medium">0 kg</span></span>
-                          <span className="text-gray-400">Sold: 1 week ago</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <button className="px-3 py-1.5 bg-emerald-900/40 hover:bg-emerald-800/50 text-emerald-300 rounded text-sm transition-colors">
-                        Relist
-                      </button>
-                      <button className="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded text-sm transition-colors">
-                        View
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 
@@ -1014,92 +1461,220 @@ export default function FarmerDashboard() {
     }
   };
 
-  // If we're still on the server or loading, show a minimal loading state
-  if (!isClient || isLoading) {
+  // Device Configuration Modal Component
+  const DeviceConfigModal = () => {
+    // Get device icon based on type
+    const getDeviceIcon = (type: string) => {
+      switch (type) {
+        case 'soil':
+          return <Thermometer className="w-5 h-5" />;
+        case 'weather':
+          return <Wind className="w-5 h-5" />;
+        case 'crop':
+          return <Activity className="w-5 h-5" />;
+        case 'irrigation':
+          return <Droplets className="w-5 h-5" />;
+        default:
+          return <Settings className="w-5 h-5" />;
+      }
+    };
+
+    // Get device type display name
+    const getDeviceTypeDisplay = (type: string) => {
+      switch (type) {
+        case 'soil':
+          return 'Soil Monitor';
+        case 'weather':
+          return 'Environmental Monitor';
+        case 'crop':
+          return 'Growth Tracker';
+        case 'irrigation':
+          return 'Water Management';
+        default:
+          return 'Unknown Device';
+      }
+    };
+
+    // Add signal strength calculation (simulate based on status)
+    const getSignalStrength = (device: any) => {
+      if (device.status === 'online') {
+        return 85 + Math.floor(Math.random() * 15); // 85-100%
+      } else {
+        return 40 + Math.floor(Math.random() * 30); // 40-70%
+      }
+    };
+
+    if (!deviceConfigOpen) return null;
+
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-900 via-black to-emerald-900 flex items-center justify-center">
-        <div className="flex flex-col items-center">
-          <Loader2 className="w-10 h-10 animate-spin text-emerald-400 mb-4" />
-          <div className="text-emerald-300">Loading dashboard...</div>
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="bg-gray-900 rounded-xl border border-emerald-900/50 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          {/* Modal Header */}
+          <div className="flex items-center justify-between p-6 border-b border-gray-800">
+            <div>
+              <h3 className="text-xl font-bold text-white">Device Configuration</h3>
+              <p className="text-gray-400 text-sm">Manage your IoT devices and sensors</p>
+            </div>
+            <button 
+              onClick={() => setDeviceConfigOpen(false)}
+              className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            >
+              <X className="w-5 h-5 text-gray-400" />
+            </button>
+          </div>
+
+          {/* Device Grid */}
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              {devices.map((device) => (
+                <div key={device.id} className="bg-black/30 rounded-lg p-4 border border-gray-800/50 hover:border-emerald-700/50 transition-all">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2 rounded-lg ${
+                        device.status === 'online' ? 'bg-emerald-900/30' : 'bg-amber-900/30'
+                      }`}>
+                        <div className={device.status === 'online' ? 'text-emerald-400' : 'text-amber-400'}>
+                          {getDeviceIcon(device.type)}
+                        </div>
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-white">{device.name}</h4>
+                        <p className="text-sm text-gray-400">{getDeviceTypeDisplay(device.type)}</p>
+                      </div>
+                    </div>
+                    <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs ${
+                      device.status === 'online' 
+                        ? 'bg-emerald-900/40 text-emerald-300' 
+                        : 'bg-amber-900/40 text-amber-300'
+                    }`}>
+                      {device.status === 'online' ? <Wifi className="w-3 h-3" /> : <WifiOff className="w-3 h-3" />}
+                      {device.status}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 mb-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-400 text-sm">Location:</span>
+                      <span className="text-white text-sm">{device.location}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-400 text-sm">Last Update:</span>
+                      <span className="text-emerald-400 text-sm">{device.lastUpdate}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-400 text-sm flex items-center gap-1">
+                        <Battery className="w-3 h-3" />
+                        Battery:
+                      </span>
+                      <span className={`text-sm ${device.battery > 80 ? 'text-green-400' : device.battery > 50 ? 'text-amber-400' : 'text-red-400'}`}>
+                        {device.battery}%
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-400 text-sm flex items-center gap-1">
+                        <Signal className="w-3 h-3" />
+                        Signal:
+                      </span>
+                      <span className={`text-sm ${getSignalStrength(device) > 80 ? 'text-green-400' : getSignalStrength(device) > 50 ? 'text-amber-400' : 'text-red-400'}`}>
+                        {getSignalStrength(device)}%
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2">
+                    <button 
+                      onClick={() => handleDeviceConfig(device)}
+                      className="px-3 py-2 bg-emerald-900/40 hover:bg-emerald-800/50 text-emerald-300 rounded-lg text-sm transition-colors flex items-center justify-center gap-1"
+                    >
+                      <Settings className="w-3 h-3" />
+                      Configure
+                    </button>
+                    <button 
+                      onClick={() => handleDeviceCalibrate(device)}
+                      className="px-3 py-2 bg-blue-900/40 hover:bg-blue-800/50 text-blue-300 rounded-lg text-sm transition-colors"
+                    >
+                      Calibrate
+                    </button>
+                    <button 
+                      onClick={() => handleDeviceRestart(device)}
+                      className="px-3 py-2 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg text-sm transition-colors"
+                    >
+                      Restart
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-wrap gap-3 pt-4 border-t border-gray-800">
+              <button 
+                onClick={handleAddDevice}
+                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition-colors"
+              >
+                Add New Device
+              </button>
+              <button 
+                onClick={handleRunDiagnostics}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+              >
+                Run Diagnostics
+              </button>
+              <button 
+                onClick={handleExportData}
+                className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg text-sm font-medium transition-colors"
+              >
+                Export Data
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-900 via-black to-emerald-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-emerald-900">
       {/* Header */}
-      <header className="bg-black/40 border-b border-emerald-900/50 backdrop-blur-sm sticky top-0 z-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center justify-between">
+      <header className="bg-black/30 backdrop-blur-sm border-b border-emerald-900/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-2 text-emerald-400 hover:text-emerald-300 transition-colors mr-4 sm:mr-8">
+            <Link href="/" className="flex items-center space-x-2 text-emerald-400 hover:text-emerald-300 transition-colors mr-8">
               <ArrowLeft size={16} />
-              <span className="text-sm sm:text-base">Home</span>
+              <span>Back to Home</span>
             </Link>
-            <h1 className="text-base sm:text-xl font-bold hidden sm:block">Farmer Dashboard</h1>
-            
-            {/* Mobile menu button */}
-            <button 
-              className="p-1.5 sm:hidden bg-emerald-900/50 rounded-lg ml-2"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
+            <h1 className="text-xl font-bold hidden sm:block">Farmer Dashboard</h1>
           </div>
           
-          <div className="flex items-center space-x-2 sm:space-x-4">
-            <span className="text-xs sm:text-sm text-gray-300 hidden sm:inline">Welcome, {userName.split(' ')[0]}</span>
-            <div className="h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-emerald-600 flex items-center justify-center">
-              <span className="font-medium text-xs sm:text-sm">F</span>
+          <div className="flex items-center space-x-4">
+            <span className="text-sm text-gray-300">Welcome, {farmProfile.name}</span>
+            <div className="h-8 w-8 rounded-full bg-emerald-600 flex items-center justify-center mr-2">
+              <span className="font-medium text-sm">{farmProfile.name.charAt(0)}</span>
             </div>
             <button 
               onClick={handleLogout}
-              className="p-1.5 sm:px-3 sm:py-1.5 bg-emerald-900/50 hover:bg-emerald-800 active:bg-emerald-900 text-white rounded-lg transition-colors flex items-center gap-2 border border-emerald-700/30"
+              className="px-3 py-1.5 bg-emerald-900/50 hover:bg-emerald-800 text-white rounded-lg transition-colors flex items-center gap-2 text-sm border border-emerald-700/30"
               aria-label="Log out"
             >
               <LogOut size={16} />
-              <span className="hidden sm:inline text-sm">Log Out</span>
+              <span className="hidden sm:inline">Log Out</span>
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Navigation Overlay */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 bg-black/80 z-10 lg:hidden overflow-y-auto pt-16 pb-6 px-4">
-          <nav className="max-w-md mx-auto">
-            <div className="bg-black/60 backdrop-blur-md rounded-xl border border-emerald-900/50 overflow-hidden mb-4">
-              <ul>
-                {menuItems.map(item => (
-                  <li key={item.id}>
-                    <button
-                      onClick={() => handleTabChange(item.id)}
-                      className={`w-full flex items-center space-x-3 px-4 py-3 hover:bg-emerald-900/20 active:bg-emerald-900/40 transition-colors ${activeTab === item.id ? 'bg-emerald-900/40 border-l-2 border-emerald-400' : ''}`}
-                    >
-                      <span className={`${activeTab === item.id ? 'text-emerald-400' : 'text-gray-400'}`}>{item.icon}</span>
-                      <span>{item.label}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </nav>
-        </div>
-      )}
-
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-        <div className="flex flex-col lg:flex-row gap-4 sm:gap-8">
-          {/* Sidebar Menu - Hidden on mobile, visible on larger screens */}
-          <div className="w-full lg:w-64 hidden lg:block">
-            <div className="bg-black/30 backdrop-blur-sm rounded-xl border border-emerald-900/50 overflow-hidden sticky top-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Sidebar */}
+          <div className="w-full lg:w-64">
+            <div className="bg-black/30 backdrop-blur-sm rounded-xl border border-emerald-900/50 overflow-hidden">
               <ul>
                 {menuItems.map(item => (
                   <li key={item.id}>
                     <button
-                      onClick={() => handleTabChange(item.id)}
-                      className={`w-full flex items-center space-x-3 px-4 py-3 hover:bg-emerald-900/20 active:bg-emerald-900/40 transition-colors ${activeTab === item.id ? 'bg-emerald-900/40 border-l-2 border-emerald-400' : ''}`}
+                      onClick={() => setActiveTab(item.id)}
+                      className={`w-full flex items-center space-x-3 px-4 py-3 hover:bg-emerald-900/20 transition-colors ${activeTab === item.id ? 'bg-emerald-900/40 border-l-2 border-emerald-400' : ''}`}
                     >
                       <span className={`${activeTab === item.id ? 'text-emerald-400' : 'text-gray-400'}`}>{item.icon}</span>
                       <span>{item.label}</span>
@@ -1108,13 +1683,6 @@ export default function FarmerDashboard() {
                 ))}
               </ul>
             </div>
-          </div>
-
-          {/* Mobile Tab Indicator - only on small screens */}
-          <div className="lg:hidden mb-2">
-            <h2 className="text-lg font-medium text-emerald-300 px-1">
-              {menuItems.find(item => item.id === activeTab)?.label || 'Dashboard'}
-            </h2>
           </div>
 
           {/* Content Area */}
@@ -1123,6 +1691,421 @@ export default function FarmerDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Device Configuration Modal */}
+      <DeviceConfigModal />
+
+      {/* List New Product Modal */}
+    {listProductOpen && (
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="bg-gray-900 rounded-xl p-6 w-full max-w-2xl border border-emerald-900/50 max-h-[90vh] overflow-y-auto">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-white">List New Product</h2>
+            <button 
+              onClick={() => setListProductOpen(false)}
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+
+          <form className="space-y-4" onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target as HTMLFormElement);
+            handleCreateProduct({
+              name: formData.get('name'),
+              description: formData.get('description'),
+              price: parseFloat(formData.get('price') as string),
+              unit: formData.get('unit'),
+              stock: parseInt(formData.get('stock') as string),
+              category: formData.get('category')
+            });
+          }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Product Name</label>
+                <input 
+                  type="text" 
+                  name="name"
+                  required
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none"
+                  placeholder="e.g., Organic Tomatoes"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Category</label>
+                <select 
+                  name="category"
+                  required
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none"
+                >
+                  <option value="">Select Category</option>
+                  <option value="vegetables">Vegetables</option>
+                  <option value="fruits">Fruits</option>
+                  <option value="grains">Grains</option>
+                  <option value="herbs">Herbs</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Description</label>
+              <textarea 
+                name="description"
+                required
+                rows={3}
+                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none"
+                placeholder="Describe your product..."
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Price</label>
+                <input 
+                  type="number" 
+                  name="price"
+                  required
+                  step="0.01"
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none"
+                  placeholder="0.00"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Unit</label>
+                <select 
+                  name="unit"
+                  required
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none"
+                >
+                  <option value="">Select Unit</option>
+                  <option value="lb">Per Pound</option>
+                  <option value="kg">Per Kilogram</option>
+                  <option value="bunch">Per Bunch</option>
+                  <option value="box">Per Box</option>
+                  <option value="bag">Per Bag</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Stock</label>
+                <input 
+                  type="number" 
+                  name="stock"
+                  required
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none"
+                  placeholder="0"
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3 pt-4">
+              <button 
+                type="submit"
+                className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors"
+              >
+                List Product
+              </button>
+              <button 
+                type="button"
+                onClick={() => setListProductOpen(false)}
+                className="px-6 py-2 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg font-medium transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    )}
+
+    {/* Analytics Modal */}
+    {analyticsOpen && (
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="bg-gray-900 rounded-xl p-6 w-full max-w-4xl border border-emerald-900/50 max-h-[90vh] overflow-y-auto">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-white">Marketplace Analytics</h2>
+            <button 
+              onClick={() => setAnalyticsOpen(false)}
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div className="bg-black/30 rounded-lg p-4 border border-emerald-900/50">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-emerald-400">$3,247</div>
+                <div className="text-sm text-gray-400">Total Revenue</div>
+                <div className="text-xs text-emerald-300 mt-1">+18% this month</div>
+              </div>
+            </div>
+            <div className="bg-black/30 rounded-lg p-4 border border-blue-900/50">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-400">156</div>
+                <div className="text-sm text-gray-400">Orders Completed</div>
+                <div className="text-xs text-blue-300 mt-1">+25% this month</div>
+              </div>
+            </div>
+            <div className="bg-black/30 rounded-lg p-4 border border-amber-900/50">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-amber-400">4.8★</div>
+                <div className="text-sm text-gray-400">Avg Rating</div>
+                <div className="text-xs text-amber-300 mt-1">Based on 89 reviews</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-black/30 rounded-lg p-4 border border-gray-800">
+              <h3 className="font-semibold text-white mb-4">Top Performing Products</h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300">Organic Kale</span>
+                  <span className="text-emerald-400 font-medium">$645</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300">Heritage Tomatoes</span>
+                  <span className="text-emerald-400 font-medium">$523</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300">Organic Maize</span>
+                  <span className="text-emerald-400 font-medium">$412</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-black/30 rounded-lg p-4 border border-gray-800">
+              <h3 className="font-semibold text-white mb-4">Customer Insights</h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300">Repeat Customers</span>
+                  <span className="text-blue-400 font-medium">67%</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300">Avg Order Value</span>
+                  <span className="text-blue-400 font-medium">$28.50</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300">Customer Satisfaction</span>
+                  <span className="text-blue-400 font-medium">94%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end mt-6">
+            <button 
+              onClick={() => setAnalyticsOpen(false)}
+              className="px-6 py-2 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg font-medium transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Edit Product Modal */}
+    {editProductOpen && selectedProduct && (
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="bg-gray-900 rounded-xl p-6 w-full max-w-2xl border border-emerald-900/50 max-h-[90vh] overflow-y-auto">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-white">Edit Product</h2>
+            <button 
+              onClick={() => setEditProductOpen(false)}
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+
+          <form className="space-y-4" onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target as HTMLFormElement);
+            handleUpdateProduct({
+              name: formData.get('name'),
+              description: formData.get('description'),
+              price: parseFloat(formData.get('price') as string),
+              unit: formData.get('unit'),
+              stock: parseInt(formData.get('stock') as string)
+            });
+          }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Product Name</label>
+                <input 
+                  type="text" 
+                  name="name"
+                  required
+                  defaultValue={selectedProduct.name}
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Unit</label>
+                <select 
+                  name="unit"
+                  required
+                  defaultValue={selectedProduct.unit}
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none"
+                >
+                  <option value="lb">Per Pound</option>
+                  <option value="kg">Per Kilogram</option>
+                  <option value="bunch">Per Bunch</option>
+                  <option value="box">Per Box</option>
+                  <option value="bag">Per Bag</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Description</label>
+              <textarea 
+                name="description"
+                required
+                rows={3}
+                defaultValue={selectedProduct.description}
+                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Price</label>
+                <input 
+                  type="number" 
+                  name="price"
+                  required
+                  step="0.01"
+                  defaultValue={selectedProduct.price}
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Stock</label>
+                <input 
+                  type="number" 
+                  name="stock"
+                  required
+                  defaultValue={selectedProduct.stock}
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3 pt-4">
+              <button 
+                type="submit"
+                className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors"
+              >
+                Update Product
+              </button>
+              <button 
+                type="button"
+                onClick={() => setEditProductOpen(false)}
+                className="px-6 py-2 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg font-medium transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    )}
+
+    {/* View Product Modal */}
+    {viewProductOpen && selectedProduct && (
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="bg-gray-900 rounded-xl p-6 w-full max-w-2xl border border-emerald-900/50 max-h-[90vh] overflow-y-auto">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-white">Product Details</h2>
+            <button 
+              onClick={() => setViewProductOpen(false)}
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+
+          <div className="space-y-6">
+            <div className="flex items-start gap-4">
+              <div className="w-20 h-20 bg-gradient-to-br from-green-600/30 to-emerald-600/30 rounded-lg flex items-center justify-center">
+                <Sprout className="w-10 h-10 text-green-400" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-semibold text-white mb-2">{selectedProduct.name}</h3>
+                <span className={`px-3 py-1 rounded-full text-sm ${
+                  selectedProduct.status === 'active' ? 'bg-emerald-900/40 text-emerald-300' : 'bg-red-900/40 text-red-300'
+                }`}>
+                  {selectedProduct.status === 'active' ? 'Active' : 'Sold Out'}
+                </span>
+              </div>
+            </div>
+
+            <div className="bg-black/30 rounded-lg p-4 border border-gray-800">
+              <h4 className="font-medium text-white mb-2">Description</h4>
+              <p className="text-gray-300">{selectedProduct.description}</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-black/30 rounded-lg p-4 border border-gray-800">
+                <h4 className="font-medium text-white mb-2">Pricing</h4>
+                <div className="text-2xl font-bold text-emerald-400">${selectedProduct.price}</div>
+                <div className="text-sm text-gray-400">per {selectedProduct.unit}</div>
+              </div>
+              <div className="bg-black/30 rounded-lg p-4 border border-gray-800">
+                <h4 className="font-medium text-white mb-2">Stock</h4>
+                <div className={`text-2xl font-bold ${selectedProduct.stock > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                  {selectedProduct.stock}
+                </div>
+                <div className="text-sm text-gray-400">{selectedProduct.unit} available</div>
+              </div>
+            </div>
+
+            <div className="bg-black/30 rounded-lg p-4 border border-gray-800">
+              <h4 className="font-medium text-white mb-3">Performance Metrics</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <div className="text-sm text-gray-400">Total Sales</div>
+                  <div className="text-lg font-semibold text-white">$1,247</div>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-400">Units Sold</div>
+                  <div className="text-lg font-semibold text-white">89</div>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-400">Views</div>
+                  <div className="text-lg font-semibold text-white">342</div>
+                </div>
+                <div>
+                  <div className="text-sm text-gray-400">Listed Date</div>
+                  <div className="text-lg font-semibold text-white">{selectedProduct.listedDate}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex gap-3 pt-6">
+            <button 
+              onClick={() => {
+                setViewProductOpen(false);
+                handleEditProduct(selectedProduct);
+              }}
+              className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors"
+            >
+              Edit Product
+            </button>
+            <button 
+              onClick={() => setViewProductOpen(false)}
+              className="px-6 py-2 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg font-medium transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
     </div>
   );
 }
