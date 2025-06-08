@@ -118,7 +118,7 @@ export default function FarmerDashboard() {
     { id: 'tokenization', label: 'Tokenization', icon: <Scan size={20} />, description: 'Asset tokenization' },
     { id: 'funding', label: 'Funding', icon: <CreditCard size={20} />, description: 'Financial resources' },
     { id: 'monitoring', label: 'Monitoring', icon: <LineChart size={20} />, description: 'Progress tracking' },
-    { id: 'marketplace', label: 'Marketplace', icon: <Leaf size={20} />, description: 'Carbon credits' },
+    { id: 'marketplace', label: 'Marketplace', icon: <Leaf size={20} />, description: 'List farm products' },
     { id: 'rewards', label: 'Rewards', icon: <Award size={20} />, description: 'Achievements' },
   ];
   
@@ -264,7 +264,7 @@ export default function FarmerDashboard() {
                   className="flex flex-col items-center p-4 bg-green-900/30 hover:bg-green-800/40 rounded-lg transition-all group"
                 >
                   <Leaf className="w-8 h-8 text-green-400 mb-2 group-hover:scale-110 transition-transform" />
-                  <span className="text-sm font-medium text-white">Marketplace</span>
+                  <span className="text-sm font-medium text-white">Sell Products</span>
                 </button>
               </div>
             </div>
@@ -731,50 +731,216 @@ export default function FarmerDashboard() {
         return (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-white">Carbon Credit Marketplace</h2>
+              <h2 className="text-2xl font-bold text-white">Farm Products Marketplace</h2>
               <div className="flex gap-3">
-                <button className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-sm font-medium transition-colors">
-                  List Credits
+                <button className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                  <Plus className="w-4 h-4" />
+                  List New Product
                 </button>
                 <button className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors">
-                  View Market
+                  View Analytics
                 </button>
               </div>
             </div>
 
+            {/* Overview Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-emerald-900/50">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-emerald-400">8</div>
+                  <div className="text-sm text-gray-400">Active Listings</div>
+                </div>
+              </div>
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-emerald-900/50">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-400">$2,340</div>
+                  <div className="text-sm text-gray-400">Monthly Revenue</div>
+                </div>
+              </div>
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-emerald-900/50">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-400">15</div>
+                  <div className="text-sm text-gray-400">Pending Orders</div>
+                </div>
+              </div>
+              <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-emerald-900/50">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-amber-400">4.8</div>
+                  <div className="text-sm text-gray-400">Avg Rating</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Product Listings */}
+            <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-bold text-white">Your Product Listings</h3>
+                <div className="flex gap-2">
+                  <select className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm">
+                    <option>All Categories</option>
+                    <option>Vegetables</option>
+                    <option>Fruits</option>
+                    <option>Grains</option>
+                    <option>Herbs</option>
+                  </select>
+                  <select className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm">
+                    <option>All Status</option>
+                    <option>Active</option>
+                    <option>Sold Out</option>
+                    <option>Draft</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                {/* Sample Product Listings */}
+                <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800/80 hover:border-emerald-700/50 transition-all">
+                  <div className="flex items-start justify-between">
+                    <div className="flex gap-4">
+                      <div className="w-16 h-16 bg-gradient-to-br from-green-600/30 to-emerald-600/30 rounded-lg flex items-center justify-center">
+                        <Sprout className="w-8 h-8 text-green-400" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h4 className="font-semibold text-white">Organic Kale</h4>
+                          <span className="px-2 py-1 bg-emerald-900/40 text-emerald-300 rounded-full text-xs">
+                            Active
+                          </span>
+                        </div>
+                        <p className="text-gray-400 text-sm mb-2">Fresh, organically grown kale bunches. Ready for harvest.</p>
+                        <div className="flex items-center gap-4 text-sm">
+                          <span className="text-gray-400">Price: <span className="text-white font-medium">$3.50/bunch</span></span>
+                          <span className="text-gray-400">Stock: <span className="text-amber-400 font-medium">24 bunches</span></span>
+                          <span className="text-gray-400">Listed: 2 days ago</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <button className="px-3 py-1.5 bg-emerald-900/40 hover:bg-emerald-800/50 text-emerald-300 rounded text-sm transition-colors">
+                        Edit
+                      </button>
+                      <button className="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded text-sm transition-colors">
+                        View
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800/80 hover:border-emerald-700/50 transition-all">
+                  <div className="flex items-start justify-between">
+                    <div className="flex gap-4">
+                      <div className="w-16 h-16 bg-gradient-to-br from-orange-600/30 to-red-600/30 rounded-lg flex items-center justify-center">
+                        <Sprout className="w-8 h-8 text-orange-400" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h4 className="font-semibold text-white">Heritage Tomatoes</h4>
+                          <span className="px-2 py-1 bg-emerald-900/40 text-emerald-300 rounded-full text-xs">
+                            Active
+                          </span>
+                        </div>
+                        <p className="text-gray-400 text-sm mb-2">Heirloom variety tomatoes, vine-ripened and chemical-free.</p>
+                        <div className="flex items-center gap-4 text-sm">
+                          <span className="text-gray-400">Price: <span className="text-white font-medium">$5.00/lb</span></span>
+                          <span className="text-gray-400">Stock: <span className="text-amber-400 font-medium">180 lbs</span></span>
+                          <span className="text-gray-400">Listed: 5 days ago</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <button className="px-3 py-1.5 bg-emerald-900/40 hover:bg-emerald-800/50 text-emerald-300 rounded text-sm transition-colors">
+                        Edit
+                      </button>
+                      <button className="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded text-sm transition-colors">
+                        View
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-800/80 hover:border-emerald-700/50 transition-all">
+                  <div className="flex items-start justify-between">
+                    <div className="flex gap-4">
+                      <div className="w-16 h-16 bg-gradient-to-br from-yellow-600/30 to-amber-600/30 rounded-lg flex items-center justify-center">
+                        <Sprout className="w-8 h-8 text-yellow-400" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h4 className="font-semibold text-white">Organic Maize</h4>
+                          <span className="px-2 py-1 bg-red-900/40 text-red-300 rounded-full text-xs">
+                            Sold Out
+                          </span>
+                        </div>
+                        <p className="text-gray-400 text-sm mb-2">Non-GMO yellow maize, perfect for local communities.</p>
+                        <div className="flex items-center gap-4 text-sm">
+                          <span className="text-gray-400">Price: <span className="text-white font-medium">$2.20/kg</span></span>
+                          <span className="text-gray-400">Stock: <span className="text-red-400 font-medium">0 kg</span></span>
+                          <span className="text-gray-400">Sold: 1 week ago</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <button className="px-3 py-1.5 bg-emerald-900/40 hover:bg-emerald-800/50 text-emerald-300 rounded text-sm transition-colors">
+                        Relist
+                      </button>
+                      <button className="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded text-sm transition-colors">
+                        View
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Actions & Revenue Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
-                <h3 className="text-lg font-bold text-white mb-4">Your Carbon Credits</h3>
+                <h3 className="text-lg font-bold text-white mb-4">Revenue Breakdown</h3>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-400">Available Credits</span>
-                    <span className="text-emerald-400 font-bold">{farmProfile.carbonCredits} tons</span>
+                    <span className="text-gray-400">This Month</span>
+                    <span className="text-emerald-400 font-bold">$2,340</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-400">Market Value</span>
-                    <span className="text-white font-bold">$3,440</span>
+                    <span className="text-gray-400">Last Month</span>
+                    <span className="text-white font-bold">$1,890</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-400">Current Rate</span>
-                    <span className="text-green-400 font-bold">$80/ton</span>
+                    <span className="text-gray-400">Growth</span>
+                    <span className="text-green-400 font-bold">+23.8%</span>
+                  </div>
+                  <div className="pt-3 border-t border-gray-700/50">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-400">Available for Loan Repayment</span>
+                      <span className="text-emerald-400 font-bold">$1,872</span>
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 border border-emerald-900/50">
-                <h3 className="text-lg font-bold text-white mb-4">Market Trends</h3>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-400">7-day change</span>
-                    <span className="text-emerald-400 font-bold">+5.2%</span>
+                <h3 className="text-lg font-bold text-white mb-4">Recent Orders</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-gray-900/50 rounded-lg">
+                    <div>
+                      <p className="text-white font-medium">Organic Kale - 5 bunches</p>
+                      <p className="text-gray-400 text-sm">Order #2024-001</p>
+                    </div>
+                    <span className="text-emerald-400 font-bold">$17.50</span>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-400">30-day high</span>
-                    <span className="text-white font-bold">$85/ton</span>
+                  <div className="flex items-center justify-between p-3 bg-gray-900/50 rounded-lg">
+                    <div>
+                      <p className="text-white font-medium">Heritage Tomatoes - 12 lbs</p>
+                      <p className="text-gray-400 text-sm">Order #2024-002</p>
+                    </div>
+                    <span className="text-emerald-400 font-bold">$60.00</span>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-400">30-day low</span>
-                    <span className="text-white font-bold">$75/ton</span>
+                  <div className="flex items-center justify-between p-3 bg-gray-900/50 rounded-lg">
+                    <div>
+                      <p className="text-white font-medium">Mixed Vegetables</p>
+                      <p className="text-gray-400 text-sm">Order #2024-003</p>
+                    </div>
+                    <span className="text-emerald-400 font-bold">$32.75</span>
                   </div>
                 </div>
               </div>
