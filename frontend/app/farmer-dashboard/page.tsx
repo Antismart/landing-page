@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { 
   ArrowLeft, Tractor, Sprout, LineChart, Scan, CreditCard, 
-  Leaf, Loader2, LogOut, Menu, X, CheckCircle, 
+  Leaf, LogOut, X, CheckCircle, 
   Clock, FileText, MessageSquare, Plus, TrendingUp, DollarSign, 
   Award, BarChart3, Zap, Star, Bell, Settings, Wifi, WifiOff, 
   Activity, Battery, Signal, Thermometer, Droplets, Wind
@@ -24,14 +24,45 @@ interface Product {
   image: string;
 }
 
+interface Device {
+  id: number;
+  name: string;
+  type: string;
+  status: string;
+  battery: number;
+  lastUpdate: string;
+  location: string;
+  readings: {
+    moisture?: number;
+    ph?: number;
+    temperature?: number;
+    humidity?: number;
+    rainfall?: number;
+    wind?: number;
+    growth?: number;
+    ndvi?: number;
+    health?: string;
+    waterUsage?: number;
+    efficiency?: number;
+    status?: string;
+  };
+}
+
+interface ProductData {
+  name: string;
+  category: string;
+  price: number;
+  unit: string;
+  stock: number;
+  description: string;
+  image: string;
+}
+
 export default function FarmerDashboard() {
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userName, setUserName] = useState('');
   const [deviceConfigOpen, setDeviceConfigOpen] = useState(false);
-  const [selectedDevice, setSelectedDevice] = useState(null);
   
   // Marketplace states
   const [listProductOpen, setListProductOpen] = useState(false);
@@ -40,7 +71,7 @@ export default function FarmerDashboard() {
   const [viewProductOpen, setViewProductOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   
-  const [devices, setDevices] = useState([
+  const [devices, setDevices] = useState<Device[]>([
     {
       id: 1,
       name: 'Soil Sensor #1',
@@ -127,15 +158,8 @@ export default function FarmerDashboard() {
   useEffect(() => {
     setIsClient(true);
     
-    // Small delay to ensure hydration is complete
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 100);
-    
     const storedName = localStorage.getItem('userName') || 'Farmer';
     setUserName(storedName);
-
-    return () => clearTimeout(timer);
   }, []);
   
   // Simple auth check - would be replaced with proper JWT/session check in production
@@ -212,11 +236,6 @@ export default function FarmerDashboard() {
   // Tabs state
   const [activeTab, setActiveTab] = useState('overview');
 
-  const handleTabChange = (tabId: string) => {
-    setActiveTab(tabId);
-    setMobileMenuOpen(false); // Close mobile menu when tab is selected
-  };
-
   const menuItems = [
     { id: 'overview', label: 'Overview', icon: <BarChart3 size={20} />, description: 'Dashboard overview' },
     { id: 'profile', label: 'Farm Profile', icon: <Tractor size={20} />, description: 'Manage farm details' },
@@ -243,13 +262,12 @@ export default function FarmerDashboard() {
   };
 
   // Device configuration handlers
-  const handleDeviceConfig = (device: any) => {
-    setSelectedDevice(device);
+  const handleDeviceConfig = (device: Device) => {
     // In a real app, this would open device-specific configuration
     alert(`Configuring ${device.name}...`);
   };
 
-  const handleDeviceCalibrate = (device: any) => {
+  const handleDeviceCalibrate = (device: Device) => {
     setDevices(prevDevices => 
       prevDevices.map(d => 
         d.id === device.id 
@@ -271,7 +289,7 @@ export default function FarmerDashboard() {
     }, 2000);
   };
 
-  const handleDeviceRestart = (device: any) => {
+  const handleDeviceRestart = (device: Device) => {
     setDevices(prevDevices => 
       prevDevices.map(d => 
         d.id === device.id 
@@ -355,11 +373,11 @@ export default function FarmerDashboard() {
     alert(`${product.name} has been relisted successfully!`);
   };
 
-  const handleCreateProduct = (productData: any) => {
-    const newProduct = {
+  const handleCreateProduct = (productData: ProductData) => {
+    const newProduct: Product = {
       id: products.length + 1,
       ...productData,
-      status: 'active',
+      status: 'active' as const,
       listedDate: 'Just now'
     };
     setProducts(prevProducts => [...prevProducts, newProduct]);
@@ -367,7 +385,7 @@ export default function FarmerDashboard() {
     alert('Product listed successfully!');
   };
 
-  const handleUpdateProduct = (productData: any) => {
+  const handleUpdateProduct = (productData: Partial<ProductData>) => {
     if (!selectedProduct) return;
     
     setProducts(prevProducts => 
@@ -1496,7 +1514,7 @@ export default function FarmerDashboard() {
     };
 
     // Add signal strength calculation (simulate based on status)
-    const getSignalStrength = (device: any) => {
+    const getSignalStrength = (device: Device) => {
       if (device.status === 'online') {
         return 85 + Math.floor(Math.random() * 15); // 85-100%
       } else {
@@ -1713,12 +1731,13 @@ export default function FarmerDashboard() {
             e.preventDefault();
             const formData = new FormData(e.target as HTMLFormElement);
             handleCreateProduct({
-              name: formData.get('name'),
-              description: formData.get('description'),
+              name: formData.get('name') as string,
+              description: formData.get('description') as string,
               price: parseFloat(formData.get('price') as string),
-              unit: formData.get('unit'),
+              unit: formData.get('unit') as string,
               stock: parseInt(formData.get('stock') as string),
-              category: formData.get('category')
+              category: formData.get('category') as string,
+              image: formData.get('image') as string || 'default'
             });
           }}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1796,6 +1815,16 @@ export default function FarmerDashboard() {
                   placeholder="0"
                 />
               </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Image</label>
+              <input 
+                type="text" 
+                name="image"
+                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none"
+                placeholder="Image identifier (e.g., tomatoes, kale)"
+              />
             </div>
 
             <div className="flex gap-3 pt-4">
@@ -1924,10 +1953,10 @@ export default function FarmerDashboard() {
             e.preventDefault();
             const formData = new FormData(e.target as HTMLFormElement);
             handleUpdateProduct({
-              name: formData.get('name'),
-              description: formData.get('description'),
+              name: formData.get('name') as string,
+              description: formData.get('description') as string,
               price: parseFloat(formData.get('price') as string),
-              unit: formData.get('unit'),
+              unit: formData.get('unit') as string,
               stock: parseInt(formData.get('stock') as string)
             });
           }}>
